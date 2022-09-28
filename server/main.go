@@ -2,21 +2,21 @@ package main
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/gommon/log"
 	"net/http"
 	"os"
 )
 
 func main() {
 	e := echo.New()
+	logger := initLogger()
 
 	e.GET("/", func(c echo.Context) error {
-		log.Info("[GET] /")
+		logger.Info("[GET] /")
 		return c.JSON(http.StatusOK, "Hello World!")
 	})
 
 	e.GET("/health", func(c echo.Context) error {
-		log.Info("[GET] /health")
+		logger.Info("[GET] /health")
 		return c.JSON(http.StatusOK, "Server OK")
 	})
 
