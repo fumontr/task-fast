@@ -12,7 +12,8 @@ const Home: NextPage = () => {
         xl: 'container.xl',
       }}
       bg="brand.900"
-      p={0} m={0}
+      p={0}
+      m={0}
     >
       <Flex color="brand.900" bg="brand.100">
         Hello World!
