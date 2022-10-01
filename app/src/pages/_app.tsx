@@ -43,13 +43,12 @@ const spacing = {
   },
 }
 
-
 const theme = extendTheme({
   colors: {
     brand: {
-      100: "#f7fafc",
-      900: "#1a202c"
-    }
+      100: '#f7fafc',
+      900: '#1a202c',
+    },
   },
   Button: {
     // 1. We can update the base styles
