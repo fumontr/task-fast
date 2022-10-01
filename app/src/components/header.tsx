@@ -1,8 +1,10 @@
 import { Flex, IconButton } from '@chakra-ui/react'
 import { AddIcon, EditIcon } from '@chakra-ui/icons'
 import { VscDebugStart } from 'react-icons/vsc'
+import { getTodayForHeader } from '../lib/util'
 
 export const TaskFastHeader = () => {
+  const today = getTodayForHeader()
   return (
     <Flex
       h={{ base: 12, md: '64px' }}
@@ -13,7 +15,7 @@ export const TaskFastHeader = () => {
       color="black"
     >
       <EditIcon w={4} h={4} />
-      <Flex>2022/10/01 土</Flex>
+      <Flex>{today}</Flex>
       <Flex alignItems="center">
         <IconButton aria-label="start-task-icon" icon={<VscDebugStart />} />
         <AddIcon w={4} h={4} />
