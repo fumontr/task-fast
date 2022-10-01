@@ -1,5 +1,6 @@
 import { NextPage } from 'next'
-import { Container, Flex } from '@chakra-ui/react'
+import { Container } from '@chakra-ui/react'
+import { TaskFastHeader } from '@/components/header'
 
 const Home: NextPage = () => {
   return (
@@ -15,9 +16,7 @@ const Home: NextPage = () => {
       p={0}
       m={0}
     >
-      <Flex color="brand.900" bg="brand.100">
-        Hello World!
-      </Flex>
+      <TaskFastHeader />
     </Container>
   )
 }
