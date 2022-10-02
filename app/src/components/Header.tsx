@@ -11,7 +11,7 @@ export const TaskFastHeader = () => {
       justifyContent="space-between"
       alignItems="center"
       px={{ base: '10px', md: 6 }}
-      bg="#D9D9D9"
+      bg="brand.background.default"
       color="black"
     >
       <EditIcon w={4} h={4} />

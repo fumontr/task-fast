@@ -48,6 +48,9 @@ const theme = extendTheme({
     brand: {
       100: '#f7fafc',
       900: '#1a202c',
+      background: {
+        default: '#D9D9D9',
+      },
     },
   },
   Button: {
@@ -91,7 +94,7 @@ const theme = extendTheme({
       // styles for the `body`
       body: {
         bg: 'gray.400',
-        color: 'white',
+        color: 'black',
       },
       // styles for the `a`
       a: {
