@@ -1,7 +1,8 @@
 import { NextPage } from 'next'
 import { Container, Flex } from '@chakra-ui/react'
-import { TaskFastHeader } from '@/components/header'
-import { SearchBox } from '@/components/searchBox'
+import { TaskFastHeader } from '@/components/Header'
+import { SearchBox } from '@/components/SearchBox'
+import { FilterButtons } from '@/components/FilterButtons'
 
 const Home: NextPage = () => {
   return (
@@ -20,6 +21,8 @@ const Home: NextPage = () => {
       >
         <TaskFastHeader />
         <SearchBox />
+        <Flex border="1px" h={0} borderColor="brand.background.default" />
+        <FilterButtons />
       </Container>
     </Flex>
   )

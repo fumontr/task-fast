@@ -7,7 +7,7 @@ export const SearchBox = () => {
       mx={'10px'}
       my={2}
       borderRadius="10px"
-      bg="#D9D9D9"
+      bg="brand.background.default"
       h={10}
       alignItems="center"
     >
