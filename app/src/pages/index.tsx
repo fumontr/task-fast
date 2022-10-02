@@ -20,6 +20,7 @@ const Home: NextPage = () => {
       >
         <TaskFastHeader />
         <SearchBox />
+        <Flex border="1px" h={0} borderColor="#D9D9D9" />
       </Container>
     </Flex>
   )
