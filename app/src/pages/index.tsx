@@ -3,6 +3,7 @@ import { Container, Flex } from '@chakra-ui/react'
 import { TaskFastHeader } from '@/components/Header'
 import { SearchBox } from '@/components/SearchBox'
 import { FilterButtons } from '@/components/FilterButtons'
+import { Section } from '@/components/Section'
 
 const Home: NextPage = () => {
   return (
@@ -15,7 +16,7 @@ const Home: NextPage = () => {
           lg: 'container.lg',
           xl: 'container.xl',
         }}
-        bg="gray.400"
+        bg="white"
         p={0}
         m={0}
       >
@@ -23,6 +24,14 @@ const Home: NextPage = () => {
         <SearchBox />
         <Flex border="1px" h={0} borderColor="brand.background.default" />
         <FilterButtons />
+        <Section />
+        <Section />
+        <Section />
+        <Section />
+        <Section />
+        <Section />
+        <Section />
+        <Section />
       </Container>
     </Flex>
   )

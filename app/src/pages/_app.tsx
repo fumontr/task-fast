@@ -51,6 +51,7 @@ const theme = extendTheme({
       background: {
         default: '#D9D9D9',
       },
+      taskBackground: '#F1F1F1',
     },
   },
   Button: {
@@ -93,7 +94,7 @@ const theme = extendTheme({
     global: {
       // styles for the `body`
       body: {
-        bg: 'gray.400',
+        bg: 'white',
         color: 'black',
       },
       // styles for the `a`
