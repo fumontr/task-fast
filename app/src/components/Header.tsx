@@ -14,11 +14,11 @@ export const TaskFastHeader = () => {
       bg="brand.background.default"
       color="black"
     >
-      <EditIcon w={4} h={4} />
+      <IconButton aria-label="edit-task-list" icon={<EditIcon />} />k
       <Flex>{today}</Flex>
       <Flex alignItems="center">
         <IconButton aria-label="start-task-icon" icon={<VscDebugStart />} />
-        <AddIcon w={4} h={4} />
+        <IconButton aria-label="add-task-icon" icon={<AddIcon />} />
       </Flex>
     </Flex>
   )
