@@ -13,6 +13,10 @@ export const TaskFastHeader = () => {
       px={{ base: '10px', md: 6 }}
       bg="brand.background.default"
       color="black"
+      position="sticky"
+      top={0}
+      zIndex={'sticky'}
+      overflow="hidden"
     >
       <IconButton aria-label="edit-task-list" icon={<EditIcon />} />
       <Flex>{today}</Flex>

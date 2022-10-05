@@ -4,6 +4,7 @@ import { TaskFastHeader } from '@/components/Header'
 import { SearchBox } from '@/components/SearchBox'
 import { FilterButtons } from '@/components/FilterButtons'
 import { Section } from '@/components/Section'
+import { TaskFastFooter } from '@/components/Footer'
 
 const Home: NextPage = () => {
   return (
@@ -32,6 +33,7 @@ const Home: NextPage = () => {
         <Section />
         <Section />
         <Section />
+        <TaskFastFooter />
       </Container>
     </Flex>
   )
