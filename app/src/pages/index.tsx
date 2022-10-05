@@ -1,10 +1,10 @@
 import { NextPage } from 'next'
 import { Container, Flex } from '@chakra-ui/react'
-import { TaskFastHeader } from '@/components/Header'
-import { SearchBox } from '@/components/SearchBox'
-import { FilterButtons } from '@/components/FilterButtons'
-import { Section } from '@/components/Section'
-import { TaskFastFooter } from '@/components/Footer'
+import { TaskFastHeader } from '../components/Header'
+import { SearchBox } from '../components/SearchBox'
+import { FilterButtons } from '../components/FilterButtons'
+import { Section } from '../components/Section'
+import { TaskFastFooter } from '../components/Footer'
 
 const Home: NextPage = () => {
   return (
