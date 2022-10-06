@@ -3,6 +3,7 @@ import { VscDebugStart } from 'react-icons/vsc'
 
 export const Task = ({ task }: { task: string }) => {
   const fontSize = '8px'
+  const bgDefault = 'brand.taskBackground'
   return (
     <Flex
       h={8}
@@ -11,7 +12,13 @@ export const Task = ({ task }: { task: string }) => {
       justifyContent="space-between"
     >
       <Flex alignItems="center">
-        <IconButton aria-label="start-task-icon" icon={<VscDebugStart />} />
+        <IconButton
+          aria-label="start-task-icon"
+          icon={<VscDebugStart />}
+          w={8}
+          h={8}
+          bg={bgDefault}
+        />
         <Text fontSize="12px">{task}</Text>
       </Flex>
       <Flex direction="column" pr={2}>
