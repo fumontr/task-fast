@@ -5,6 +5,7 @@ export const FilterButtons = () => {
   const fontSize = '12px'
   const fontWeight = 'regular'
   const buttonTexts = ['実行中', '未完了', 'プロジェクト', 'タグ', 'タスク']
+  const bgDefault = 'brand.background.default'
   return (
     <Flex
       mx="10px"
@@ -16,7 +17,12 @@ export const FilterButtons = () => {
       justifyContent="space-between"
     >
       {buttonTexts.map((text) => (
-        <Button fontSize={fontSize} fontWeight={fontWeight} key={uuidv4()}>
+        <Button
+          fontSize={fontSize}
+          fontWeight={fontWeight}
+          key={uuidv4()}
+          bg={bgDefault}
+        >
           {text}
         </Button>
       ))}
