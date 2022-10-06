@@ -5,6 +5,7 @@ import { getTodayForHeader } from '../lib/util'
 
 export const TaskFastHeader = () => {
   const today = getTodayForHeader()
+  const bgDefault = 'brand.background.default'
   return (
     <Flex
       h={{ base: 12, md: '64px' }}
@@ -18,11 +19,23 @@ export const TaskFastHeader = () => {
       zIndex={'sticky'}
       overflow="hidden"
     >
-      <IconButton aria-label="edit-task-list" icon={<EditIcon />} />
+      <IconButton
+        aria-label="edit-task-list"
+        icon={<EditIcon />}
+        bg={bgDefault}
+      />
       <Flex>{today}</Flex>
       <Flex alignItems="center">
-        <IconButton aria-label="start-task-icon" icon={<VscDebugStart />} />
-        <IconButton aria-label="add-task-icon" icon={<AddIcon />} />
+        <IconButton
+          aria-label="start-task-icon"
+          icon={<VscDebugStart />}
+          bg={bgDefault}
+        />
+        <IconButton
+          aria-label="add-task-icon"
+          icon={<AddIcon />}
+          bg={bgDefault}
+        />
       </Flex>
     </Flex>
   )
