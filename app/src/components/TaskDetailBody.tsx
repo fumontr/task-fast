@@ -92,7 +92,7 @@ const TaskDetailElement = ({ title }: { title: string }) => {
 
 const TaskMemo = () => {
   return (
-    <Flex px={2} pt={1} h={{ base: "350px", md: '150px' }}>
+    <Flex px={2} pt={1} h={{ base: '350px', md: '150px' }}>
       <Text
         fontSize={{ base: '12px', md: '24px' }}
         color="text.900"

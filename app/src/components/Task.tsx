@@ -1,10 +1,12 @@
-import { Flex, IconButton, Text } from '@chakra-ui/react'
+import { Flex, IconButton, Text, Link } from '@chakra-ui/react'
 import { VscDebugStart } from 'react-icons/vsc'
+import NextLink from 'next/link'
 
 export const Task = ({ task }: { task: string }) => {
   const fontSize = '8px'
   const bgDefault = 'brand.taskBackground'
   return (
+    <Link as={NextLink} href="/taskDetail">
     <Flex
       h={8}
       bg="brand.taskBackground"
@@ -26,5 +28,6 @@ export const Task = ({ task }: { task: string }) => {
         <Text fontSize={fontSize}>12:00</Text>
       </Flex>
     </Flex>
+    </Link>
   )
 }

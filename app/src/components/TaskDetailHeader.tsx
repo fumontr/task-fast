@@ -1,7 +1,8 @@
-import { Flex, IconButton, Button, Text } from '@chakra-ui/react'
+import { Flex, IconButton, Button, Text, Link } from '@chakra-ui/react'
 import { ChevronLeftIcon } from '@chakra-ui/icons'
 import { getTodayForHeader } from '../lib/util'
 import { FiShare } from 'react-icons/fi'
+import NextLink from 'next/link'
 
 export const TaskDetailHeader = () => {
   const today = getTodayForHeader()
@@ -19,10 +20,14 @@ export const TaskDetailHeader = () => {
       overflow="hidden"
     >
       <Button bg={bgDefault} px={2} h={{ base: 12, md: '64px' }}>
-        <ChevronLeftIcon w={4} h={4} m={0} p={0} />
-        <Text p={0} m={0}>
-          今日
-        </Text>
+        <Link as={NextLink} href="/">
+          <Flex>
+            <ChevronLeftIcon w={4} h={4} m={0} p={0} />
+            <Text p={0} m={0}>
+              今日
+            </Text>
+          </Flex>
+        </Link>
       </Button>
       <Flex>{today}</Flex>
       <IconButton

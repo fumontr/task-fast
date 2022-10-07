@@ -16,7 +16,11 @@ export const TaskDetailFooter = () => {
           icon={<AiOutlinePause />}
           bg="brand.background.default"
         />
-        <IconButton aria-label="start-task-button" icon={<VscDebugStart />} bg="#6F6B6B"/>
+        <IconButton
+          aria-label="start-task-button"
+          icon={<VscDebugStart />}
+          bg="#6F6B6B"
+        />
       </Flex>
     </Flex>
   )
