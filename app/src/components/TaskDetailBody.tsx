@@ -2,6 +2,7 @@ import { Flex, IconButton, Input, Text } from '@chakra-ui/react'
 import { FcTodoList } from 'react-icons/fc'
 import { AiOutlineHistory } from 'react-icons/ai'
 import { FiMapPin } from 'react-icons/fi'
+import { v4 as uuidv4 } from 'uuid'
 
 export const TaskDetailBody = () => {
   const elementKeys = [
@@ -20,7 +21,7 @@ export const TaskDetailBody = () => {
     <Flex direction="column">
       <TaskTitle title={'伊豆急下田から東京まで移動'} />
       {elementKeys.map((element) => (
-        <TaskDetailElement title={element} />
+        <TaskDetailElement title={element} key={uuidv4()} />
       ))}
       <TaskMemo />
     </Flex>
@@ -69,7 +70,11 @@ const TaskDetailElement = ({ title }: { title: string }) => {
       borderColor="brand.background.default"
     >
       <Flex w={{ base: '100px', md: '200px' }}>
-        <Text color="text.900" fontSize={{ base: '12px', md: '24px' }} fontWeight="bold">
+        <Text
+          color="text.900"
+          fontSize={{ base: '12px', md: '24px' }}
+          fontWeight="bold"
+        >
           {title}:
         </Text>
       </Flex>
@@ -87,8 +92,12 @@ const TaskDetailElement = ({ title }: { title: string }) => {
 
 const TaskMemo = () => {
   return (
-    <Flex px={2} pt={1}>
-      <Text fontSize={{ base: '12px', md: '24px' }} color="text.900" fontWeight="bold">
+    <Flex px={2} pt={1} h={{ base: "350px", md: '150px' }}>
+      <Text
+        fontSize={{ base: '12px', md: '24px' }}
+        color="text.900"
+        fontWeight="bold"
+      >
         メモ:
       </Text>
     </Flex>
