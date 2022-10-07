@@ -53,6 +53,9 @@ const theme = extendTheme({
       },
       taskBackground: '#F1F1F1',
     },
+    text: {
+      900: '#1a237e',
+    },
   },
   Button: {
     // 1. We can update the base styles
