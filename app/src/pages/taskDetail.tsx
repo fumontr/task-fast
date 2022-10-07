@@ -1,5 +1,6 @@
 import { Container, Flex } from '@chakra-ui/react'
 import { TaskDetailHeader } from '../components/TaskDetailHeader'
+import { TaskDetailBody } from '../components/TaskDetailBody'
 
 const taskDetail = () => {
   return (
@@ -16,6 +17,7 @@ const taskDetail = () => {
         m={0}
       >
         <TaskDetailHeader />
+        <TaskDetailBody />
       </Container>
     </Flex>
   )

@@ -18,11 +18,7 @@ export const TaskDetailHeader = () => {
       zIndex={'sticky'}
       overflow="hidden"
     >
-      <Button
-        bg={bgDefault}
-        px={2}
-        h={{ base: 12, md: '64px' }}
-      >
+      <Button bg={bgDefault} px={2} h={{ base: 12, md: '64px' }}>
         <ChevronLeftIcon w={4} h={4} m={0} p={0} />
         <Text p={0} m={0}>
           今日
