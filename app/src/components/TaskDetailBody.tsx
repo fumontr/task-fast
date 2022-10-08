@@ -81,7 +81,7 @@ const TaskDetailElement = ({ title }: { title: string }) => {
     >
       <Flex w={{ base: '100px', md: '200px' }}>
         <Text
-          color="text.900"
+          color="indigo.900"
           fontSize={{ base: '12px', md: '24px' }}
           fontWeight="bold"
         >
@@ -105,7 +105,7 @@ const TaskMemo = () => {
     <Flex px={2} pt={1} h={{ base: '350px', md: '150px' }}>
       <Text
         fontSize={{ base: '12px', md: '24px' }}
-        color="text.900"
+        color="indigo.900"
         fontWeight="bold"
       >
         メモ:
