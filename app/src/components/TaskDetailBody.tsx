@@ -39,7 +39,11 @@ const TaskTitle = ({ title }: { title: string }) => {
       alignItems="center"
     >
       <Flex alignItems="center">
-        <IconButton aria-label="add-task-icon" icon={<FcTodoList />} bg="white"/>
+        <IconButton
+          aria-label="add-task-icon"
+          icon={<FcTodoList />}
+          bg="white"
+        />
         <Input
           type="text"
           color="black"
@@ -55,7 +59,12 @@ const TaskTitle = ({ title }: { title: string }) => {
           size="sm"
           bg="white"
         />
-        <IconButton aria-label="map-button" icon={<FiMapPin />} size="sm" bg="white"/>
+        <IconButton
+          aria-label="map-button"
+          icon={<FiMapPin />}
+          size="sm"
+          bg="white"
+        />
       </Flex>
     </Flex>
   )
