@@ -8,10 +8,11 @@ import {
 } from '@chakra-ui/icons'
 
 export const TaskFastFooter = () => {
-  const fontSize = '8px'
+  const fontSize = 'xs'
+  const customWidth = '78px'
   return (
     <Flex
-      justifyContent="space-evenly"
+      justifyContent="left"
       bg="black"
       color="white"
       position="sticky"
@@ -20,23 +21,48 @@ export const TaskFastFooter = () => {
       overflow="hidden"
       h="48px"
     >
-      <Flex direction="column" justifyContent="center" alignItems="center">
+      <Flex
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        w={customWidth}
+      >
         <CheckIcon w={4} h={4} />
-        <Text fontSize={fontSize}>終了予定 - 02:40 </Text>
+        <Text fontSize={fontSize}>02:40</Text>
       </Flex>
-      <Flex direction="column" justifyContent="center" alignItems="center">
+      <Flex
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        w={customWidth}
+      >
         <TimeIcon w={4} h={4} />
         <Text fontSize={fontSize}>過去ログ</Text>
       </Flex>
-      <Flex direction="column" justifyContent="center" alignItems="center">
+      <Flex
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        w={customWidth}
+      >
         <CalendarIcon w={4} h={4} />
         <Text fontSize={fontSize}>未来</Text>
       </Flex>
-      <Flex direction="column" justifyContent="center" alignItems="center">
+      <Flex
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        w={customWidth}
+      >
         <RepeatIcon w={4} h={4} />
         <Text fontSize={fontSize}>リピート</Text>
       </Flex>
-      <Flex direction="column" justifyContent="center" alignItems="center">
+      <Flex
+        direction="column"
+        justifyContent="center"
+        alignItems="center"
+        w={customWidth}
+      >
         <SettingsIcon w={4} h={4} />
         <Text fontSize={fontSize}>設定</Text>
       </Flex>
