@@ -145,8 +145,8 @@ const theme = extendTheme({
     },
   },
   fontSizes: {
-    xxs: '8px'
-  }
+    xxs: '8px',
+  },
 })
 
 function MyApp({ Component, pageProps }: AppProps) {
