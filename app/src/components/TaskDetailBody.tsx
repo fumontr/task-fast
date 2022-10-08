@@ -47,6 +47,7 @@ const TaskTitle = ({ title }: { title: string }) => {
         <Input
           type="text"
           color="black"
+          variant='unstyled'
           placeholder={title}
           _placeholder={{ color: 'black' }}
           p={0}
@@ -91,6 +92,7 @@ const TaskDetailElement = ({ title }: { title: string }) => {
       <Flex w="full">
         <Input
           type="text"
+          variant='unstyled'
           fontSize={{ base: '12px', md: '24px' }}
           h={{ base: 8, md: 16 }}
           p={0}
