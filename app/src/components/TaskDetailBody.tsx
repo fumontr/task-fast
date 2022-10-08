@@ -39,7 +39,7 @@ const TaskTitle = ({ title }: { title: string }) => {
       alignItems="center"
     >
       <Flex alignItems="center">
-        <IconButton aria-label="add-task-icon" icon={<FcTodoList />} />
+        <IconButton aria-label="add-task-icon" icon={<FcTodoList />} bg="white"/>
         <Input
           type="text"
           color="black"
@@ -53,8 +53,9 @@ const TaskTitle = ({ title }: { title: string }) => {
           aria-label="task-history-button"
           icon={<AiOutlineHistory />}
           size="sm"
+          bg="white"
         />
-        <IconButton aria-label="map-button" icon={<FiMapPin />} size="sm" />
+        <IconButton aria-label="map-button" icon={<FiMapPin />} size="sm" bg="white"/>
       </Flex>
     </Flex>
   )
