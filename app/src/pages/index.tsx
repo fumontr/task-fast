@@ -17,6 +17,11 @@ const Home: NextPage = () => {
     setIsRunning(false)
   }
 
+  const resetTimer = () => {
+    setIsRunning(false)
+    setElapceTime(0)
+  }
+
   useEffect(() => {
     const timer = setInterval(
       () => isRunning && setElapceTime(dayjs().diff(startAt, 'second', false)),
@@ -57,7 +62,7 @@ const Home: NextPage = () => {
           {second.toString().padStart(2, '0')}
         </Text>
       </Flex>
-      <Flex>
+      <Flex direction="row">
         <Button
           color="white"
           size="lg"
@@ -69,7 +74,7 @@ const Home: NextPage = () => {
           onClick={() => startTimer()}
           display={isRunning ? 'none' : 'Flex'}
         >
-          開始
+          スタート
         </Button>
         <Button
           color="white"
@@ -82,28 +87,22 @@ const Home: NextPage = () => {
           onClick={() => stopTimer()}
           display={isRunning ? 'Flex' : 'none'}
         >
-          終了
+          ストップ
+        </Button>
+        <Button
+          color="white"
+          size="lg"
+          borderColor="white"
+          border="1px"
+          _hover={{ bg: 'gray.800' }}
+          _active={{ bg: 'gray.700' }}
+          bg="gray.900"
+          onClick={() => resetTimer()}
+        >
+          リセット
         </Button>
       </Flex>
-      <Flex p={20} direction="column" w="720px">
-        <Flex>
-          <Text fontSize="4xl" color="white" w="300px" pr="40px">
-            10:12 ~ 11:30
-          </Text>
-          <Text fontSize="4xl" color="white">
-            個人開発
-          </Text>
-        </Flex>
-        <Flex>
-          <Text fontSize="4xl" color="white" w="300px" pr="100px">
-            11:35 ~ 12:30
-          </Text>
-          <Text fontSize="4xl" color="white">
-            読書
-          </Text>
-        </Flex>
-      </Flex>
-    </Flex>
+    </Flex >
   )
 }
 
