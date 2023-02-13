@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 const Home: NextPage = () => {
   const [isRunning, setIsRunning] = useState<Boolean>(false)
   const [startAt, setStartAt] = useState(dayjs())
-  const [elapceTime, setElapceTime] = useState<number>(0)
+  const [elapseTime, setElapseTime] = useState<number>(0)
   const startTimer = () => {
     const now = dayjs()
     setIsRunning(true)
@@ -19,19 +19,19 @@ const Home: NextPage = () => {
 
   const resetTimer = () => {
     setIsRunning(false)
-    setElapceTime(0)
+    setElapseTime(0)
   }
 
   useEffect(() => {
     const timer = setInterval(
-      () => isRunning && setElapceTime(dayjs().diff(startAt, 'second', false)),
+      () => isRunning && setElapseTime(dayjs().diff(startAt, 'second', false)),
       1000
     )
     return () => clearInterval(timer)
   }, [startAt, isRunning])
-  const hour = Math.floor((elapceTime / (60 * 60)) % 24)
-  const minute = Math.floor((elapceTime / 60) % 60)
-  const second = elapceTime % 60
+  const hour = Math.floor((elapseTime / (60 * 60)) % 24)
+  const minute = Math.floor((elapseTime / 60) % 60)
+  const second = elapseTime % 60
 
   return (
     <Flex
@@ -42,23 +42,23 @@ const Home: NextPage = () => {
       bg="gray.900"
       direction="column"
     >
-      <Flex p={20} direction={'row'} alignItems="center">
-        <Text fontSize="120px" color="white" w="150px" textAlign="center">
+      <Flex p={{ base: 0, md: 20 }} direction={'row'} alignItems="center">
+        <Text fontSize={{ base: '6xl', md: '120px'}} color="white" w={{ base: '80%', md: '180px'}} textAlign="center" fontFamily="Roboto Mono">
           {hour.toString().padStart(2, '0')}
         </Text>
         <Text
-          fontSize="120px"
+          fontSize={{ base: '6xl', md: '120px'}}
           color="white"
         >
           :
         </Text>
-        <Text fontSize="120px" color="white" w="150px" textAlign="center">
+        <Text fontSize={{ base: '6xl', md: '120px'}} color="white" w={{ base: '80%', md: '180px'}} textAlign="center" fontFamily="Roboto Mono">
           {minute.toString().padStart(2, '0')}
         </Text>
-        <Text fontSize="120px" color="white">
+        <Text fontSize={{ base: '6xl', md: '120px'}} color="white">
           :
         </Text>
-        <Text fontSize="120px" color="white" w="150px" textAlign="center">
+        <Text fontSize={{ base: '6xl', md: '120px'}} color="white" w={{ base: '80%', md: '180px'}} textAlign="center" fontFamily="Roboto Mono">
           {second.toString().padStart(2, '0')}
         </Text>
       </Flex>
