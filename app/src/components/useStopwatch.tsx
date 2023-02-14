@@ -27,6 +27,11 @@ export const useStopwatch = () => {
     return () => clearInterval(timer)
   }, [startAt, isRunning])
 
-
-  return { isRunning, elapseTime, startStopwatch, stopStopwatch, resetStopwatch }
+  return {
+    isRunning,
+    elapseTime,
+    startStopwatch,
+    stopStopwatch,
+    resetStopwatch,
+  }
 }

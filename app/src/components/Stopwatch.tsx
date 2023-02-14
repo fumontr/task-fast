@@ -2,7 +2,13 @@ import { Button, Flex, Text } from '@chakra-ui/react'
 import { useStopwatch } from './useStopwatch'
 
 export const Stopwatch = () => {
-  const { isRunning, elapseTime, startStopwatch, stopStopwatch, resetStopwatch } = useStopwatch()
+  const {
+    isRunning,
+    elapseTime,
+    startStopwatch,
+    stopStopwatch,
+    resetStopwatch,
+  } = useStopwatch()
 
   const hour = Math.floor((elapseTime / (60 * 60)) % 24)
   const minute = Math.floor((elapseTime / 60) % 60)
@@ -18,22 +24,37 @@ export const Stopwatch = () => {
       direction="column"
     >
       <Flex p={{ base: 0, md: 20 }} direction={'row'} alignItems="center">
-        <Text fontSize={{ base: '6xl', md: '120px'}} color="white" w={{ base: '80%', md: '180px'}} textAlign="center" fontFamily="Roboto Mono">
+        <Text
+          fontSize={{ base: '6xl', md: '120px' }}
+          color="white"
+          w={{ base: '80%', md: '180px' }}
+          textAlign="center"
+          fontFamily="Roboto Mono"
+        >
           {hour.toString().padStart(2, '0')}
         </Text>
-        <Text
-          fontSize={{ base: '6xl', md: '120px'}}
-          color="white"
-        >
+        <Text fontSize={{ base: '6xl', md: '120px' }} color="white">
           :
         </Text>
-        <Text fontSize={{ base: '6xl', md: '120px'}} color="white" w={{ base: '80%', md: '180px'}} textAlign="center" fontFamily="Roboto Mono">
+        <Text
+          fontSize={{ base: '6xl', md: '120px' }}
+          color="white"
+          w={{ base: '80%', md: '180px' }}
+          textAlign="center"
+          fontFamily="Roboto Mono"
+        >
           {minute.toString().padStart(2, '0')}
         </Text>
-        <Text fontSize={{ base: '6xl', md: '120px'}} color="white">
+        <Text fontSize={{ base: '6xl', md: '120px' }} color="white">
           :
         </Text>
-        <Text fontSize={{ base: '6xl', md: '120px'}} color="white" w={{ base: '80%', md: '180px'}} textAlign="center" fontFamily="Roboto Mono">
+        <Text
+          fontSize={{ base: '6xl', md: '120px' }}
+          color="white"
+          w={{ base: '80%', md: '180px' }}
+          textAlign="center"
+          fontFamily="Roboto Mono"
+        >
           {second.toString().padStart(2, '0')}
         </Text>
       </Flex>
@@ -77,6 +98,6 @@ export const Stopwatch = () => {
           リセット
         </Button>
       </Flex>
-    </Flex >
+    </Flex>
   )
 }
