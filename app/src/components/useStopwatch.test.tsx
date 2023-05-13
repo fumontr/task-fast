@@ -6,4 +6,3 @@ test('before starting stopwatch', () => {
   expect(result.current.isRunning).toEqual(false)
   expect(result.current.elapseTime).toEqual(0)
 })
-

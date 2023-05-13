@@ -27,7 +27,7 @@ export const useStopwatch = () => {
 
   useEffect(() => {
     const timer = setInterval(
-      () => isRunning && setElapseTime(prev => prev + 1),
+      () => isRunning && setElapseTime((prev) => prev + 1),
       1000
     )
     return () => clearInterval(timer)
