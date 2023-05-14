@@ -8,6 +8,7 @@ export const Stopwatch = () => {
     startStopwatch,
     stopStopwatch,
     resetStopwatch,
+    history
   } = useStopwatch()
 
   const hour = Math.floor((elapseTime / (60 * 60)) % 24)
@@ -97,6 +98,12 @@ export const Stopwatch = () => {
         >
           リセット
         </Button>
+      </Flex>
+      <Flex direction='column'>
+        <Text color="white" fontSize="xl" mt={10}>History</Text>
+        {history.map((h, i) => (
+          <Text key={i} color="white" fontSize="xl" mt={1}>{h.action} {h.timestamp}</Text>
+        ))}
       </Flex>
     </Flex>
   )
