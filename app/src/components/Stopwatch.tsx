@@ -1,5 +1,6 @@
-import { Button, Flex, Text } from '@chakra-ui/react'
+import { Button, Flex, Text, Input, Spacer } from '@chakra-ui/react'
 import { StopwatchHistoryEntity, useStopwatch } from './useStopwatch'
+import { useState } from 'react'
 
 export const Stopwatch = () => {
   const {
@@ -15,6 +16,10 @@ export const Stopwatch = () => {
   const minute = Math.floor((elapseTime / 60) % 60)
   const second = elapseTime % 60
 
+  const [doingTask, setDoingTask] = useState<string>('')
+
+  const displayWidth = '600px'
+
   return (
     <Flex
       justifyContent="center"
@@ -24,7 +29,7 @@ export const Stopwatch = () => {
       bg="gray.900"
       direction="column"
     >
-      <Flex p={{ base: 0, md: 20 }} direction={'row'} alignItems="center">
+      <Flex pt={{ base: 0, md: 10 }} direction={'row'} alignItems="center">
         <Text
           fontSize={{ base: '6xl', md: '120px' }}
           color="white"
@@ -68,7 +73,10 @@ export const Stopwatch = () => {
           _hover={{ bg: 'gray.800' }}
           _active={{ bg: 'gray.700' }}
           bg="gray.900"
-          onClick={() => startStopwatch()}
+          onClick={() => {
+            startStopwatch(doingTask)
+            setDoingTask('')
+          }}
           display={isRunning ? 'none' : 'Flex'}
         >
           スタート
@@ -99,13 +107,29 @@ export const Stopwatch = () => {
           リセット
         </Button>
       </Flex>
+      <Flex my={8}>
+        <Input
+          w={displayWidth}
+          value={doingTask}
+          placeholder={"What's next?"}
+          onChange={(e) => setDoingTask(e.target.value)}
+          color={'white'}
+        />
+      </Flex>
       {/* 履歴表示 */}
       <Flex justifyContent="center" w="full" mt={10} mb={4}>
         <Text color="white" fontSize="xl">
           History
         </Text>
       </Flex>
-      <Flex direction="column" h="500px" maxH="500px" overflow="auto" px={4}>
+      <Flex
+        direction="column"
+        h="500px"
+        maxH="500px"
+        overflow="auto"
+        pr={4}
+        w={displayWidth}
+      >
         {history.map((h, i) => (
           <DisplayEvent key={i} {...h} />
         ))}
@@ -117,6 +141,10 @@ export const Stopwatch = () => {
 const DisplayEvent = (event: StopwatchHistoryEntity) => {
   return (
     <Flex mt={1}>
+      <Text color="white" fontSize="xl" pr={4}>
+        {event.task}
+      </Text>
+      <Spacer />
       <Text color="white" fontSize="xl">
         {TranslateToTime(event.start)}
       </Text>
