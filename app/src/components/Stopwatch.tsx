@@ -1,5 +1,5 @@
 import { Button, Flex, Text } from '@chakra-ui/react'
-import { useStopwatch } from './useStopwatch'
+import { StopwatchHistoryEntity, useStopwatch } from './useStopwatch'
 
 export const Stopwatch = () => {
   const {
@@ -8,6 +8,7 @@ export const Stopwatch = () => {
     startStopwatch,
     stopStopwatch,
     resetStopwatch,
+    history,
   } = useStopwatch()
 
   const hour = Math.floor((elapseTime / (60 * 60)) % 24)
@@ -98,6 +99,37 @@ export const Stopwatch = () => {
           リセット
         </Button>
       </Flex>
+      {/* 履歴表示 */}
+      <Flex justifyContent="center" w="full" mt={10} mb={4}>
+        <Text color="white" fontSize="xl">
+          History
+        </Text>
+      </Flex>
+      <Flex direction="column" h="500px" maxH="500px" overflow="auto" px={4}>
+        {history.map((h, i) => (
+          <DisplayEvent key={i} {...h} />
+        ))}
+      </Flex>
     </Flex>
   )
+}
+
+const DisplayEvent = (event: StopwatchHistoryEntity) => {
+  return (
+    <Flex mt={1}>
+      <Text color="white" fontSize="xl">
+        {TranslateToTime(event.start)}
+      </Text>
+      <Text color="white" fontSize="xl">
+        ~
+      </Text>
+      <Text color="white" fontSize="xl">
+        {event.end ? TranslateToTime(event.end) : ''}
+      </Text>
+    </Flex>
+  )
+}
+
+const TranslateToTime = (timestamp: number) => {
+  return new Date(timestamp * 1000).toLocaleTimeString()
 }
