@@ -100,10 +100,12 @@ export const Stopwatch = () => {
         </Button>
       </Flex>
       {/* 履歴表示 */}
-      <Flex direction="column">
-        <Text color="white" fontSize="xl" mt={10}>
+      <Flex justifyContent="center" w="full" mt={10} mb={4}>
+        <Text color="white" fontSize="xl">
           History
         </Text>
+      </Flex>
+      <Flex direction="column" h="500px" maxH="500px" overflow="auto" px={4}>
         {history.map((h, i) => (
           <DisplayEvent key={i} {...h} />
         ))}
