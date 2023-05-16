@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 export type StopwatchHistoryEntity = {
   start: number
   end: number | null
+  task: string
 }
 
 export const useStopwatch = () => {
@@ -13,7 +14,7 @@ export const useStopwatch = () => {
   const [stoppedElapsedTime, setStoppedElapsedTime] = useState<number>(0)
   const [history, setHistory] = useState<StopwatchHistoryEntity[]>([])
 
-  const startStopwatch = useCallback(() => {
+  const startStopwatch = useCallback((task: string) => {
     const now = dayjs()
     setIsRunning(true)
     setStartAt(now)
@@ -23,6 +24,7 @@ export const useStopwatch = () => {
       {
         start: now.unix(),
         end: null,
+        task: task,
       },
     ])
   }, [])
