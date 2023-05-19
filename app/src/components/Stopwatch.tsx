@@ -94,18 +94,6 @@ export const Stopwatch = () => {
         >
           ストップ
         </Button>
-        <Button
-          color="white"
-          size="lg"
-          borderColor="white"
-          border="1px"
-          _hover={{ bg: 'gray.800' }}
-          _active={{ bg: 'gray.700' }}
-          bg="gray.900"
-          onClick={() => resetStopwatch()}
-        >
-          リセット
-        </Button>
       </Flex>
       <Flex my={8}>
         <Input
@@ -117,10 +105,20 @@ export const Stopwatch = () => {
         />
       </Flex>
       {/* 履歴表示 */}
-      <Flex justifyContent="center" w="full" mt={10} mb={4}>
-        <Text color="white" fontSize="xl">
-          History
-        </Text>
+      <Flex justifyContent="right" w={displayWidth} mt={10} mb={4}>
+        <Button
+          variant="ghost"
+          color="white"
+          size="md"
+          borderColor="white"
+          _hover={{ bg: 'gray.700' }}
+          _active={{ bg: 'gray.600' }}
+          bg="gray.900"
+          onClick={() => resetStopwatch()}
+          display={history.length > 0 ? 'Flex' : 'none'}
+        >
+          リセット
+        </Button>
       </Flex>
       <Flex
         direction="column"
