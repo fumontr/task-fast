@@ -10,4 +10,4 @@ yarn dev
 ```
 
 ## イメージ
-<img width="1912" alt="スクリーンショット 2023-05-16 21 24 57" src="https://github.com/furiko/task-fast/assets/38683013/fde493f7-48a6-4632-bef4-aa90b87c6088">
+<img width="1912" alt="スクリーンショット 2023-05-19 17 39 32" src="https://github.com/furiko/task-fast/assets/38683013/a5d4e299-d741-4e1f-a3d9-d2259c23017e">
