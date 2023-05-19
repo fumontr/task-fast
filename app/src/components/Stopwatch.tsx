@@ -102,6 +102,9 @@ export const Stopwatch = () => {
           placeholder={"What's next?"}
           onChange={(e) => setDoingTask(e.target.value)}
           color={'white'}
+          borderColor="gray.500"
+          _focusVisible={{ borderColor: 'gray.300' }}
+          _hover={{ borderColor: 'gray.300' }}
         />
       </Flex>
       {/* 履歴表示 */}
