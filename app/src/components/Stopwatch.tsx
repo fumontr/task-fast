@@ -107,7 +107,7 @@ export const Stopwatch = () => {
       {/* 履歴表示 */}
       <Flex justifyContent="right" w={displayWidth} mt={10} mb={4}>
         <Button
-          variant='ghost'
+          variant="ghost"
           color="white"
           size="md"
           borderColor="white"
