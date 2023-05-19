@@ -29,72 +29,14 @@ export const Stopwatch = () => {
       bg="gray.900"
       direction="column"
     >
-      <Flex pt={{ base: 0, md: 10 }} direction={'row'} alignItems="center">
-        <Text
-          fontSize={{ base: '6xl', md: '120px' }}
-          color="white"
-          w={{ base: '80%', md: '180px' }}
-          textAlign="center"
-          fontFamily="Roboto Mono"
-        >
-          {hour.toString().padStart(2, '0')}
-        </Text>
-        <Text fontSize={{ base: '6xl', md: '120px' }} color="white">
-          :
-        </Text>
-        <Text
-          fontSize={{ base: '6xl', md: '120px' }}
-          color="white"
-          w={{ base: '80%', md: '180px' }}
-          textAlign="center"
-          fontFamily="Roboto Mono"
-        >
-          {minute.toString().padStart(2, '0')}
-        </Text>
-        <Text fontSize={{ base: '6xl', md: '120px' }} color="white">
-          :
-        </Text>
-        <Text
-          fontSize={{ base: '6xl', md: '120px' }}
-          color="white"
-          w={{ base: '80%', md: '180px' }}
-          textAlign="center"
-          fontFamily="Roboto Mono"
-        >
-          {second.toString().padStart(2, '0')}
-        </Text>
-      </Flex>
-      <Flex direction="row">
-        <Button
-          color="white"
-          size="lg"
-          borderColor="white"
-          border="1px"
-          _hover={{ bg: 'gray.800' }}
-          _active={{ bg: 'gray.700' }}
-          bg="gray.900"
-          onClick={() => {
-            startStopwatch(doingTask)
-            setDoingTask('')
-          }}
-          display={isRunning ? 'none' : 'Flex'}
-        >
-          スタート
-        </Button>
-        <Button
-          color="white"
-          size="lg"
-          borderColor="white"
-          border="1px"
-          _hover={{ bg: 'gray.800' }}
-          _active={{ bg: 'gray.700' }}
-          bg="gray.900"
-          onClick={() => stopStopwatch()}
-          display={isRunning ? 'Flex' : 'none'}
-        >
-          ストップ
-        </Button>
-      </Flex>
+      <DisplayTime hour={hour} minute={minute} second={second} />
+      <StopwatchButtons
+        doingTask={doingTask}
+        setDoingTask={setDoingTask}
+        startStopwatch={startStopwatch}
+        stopStopwatch={stopStopwatch}
+        isRunning={isRunning}
+      />
       <Flex my={8}>
         <Input
           w={displayWidth}
@@ -104,7 +46,131 @@ export const Stopwatch = () => {
           color={'white'}
         />
       </Flex>
-      {/* 履歴表示 */}
+      <HistoryContainer
+        displayWidth={displayWidth}
+        history={history}
+        resetStopwatch={resetStopwatch}
+      />
+    </Flex>
+  )
+}
+
+type StopwatchButtonsProps = {
+  doingTask: string
+  setDoingTask: (doingTask: string) => void
+  startStopwatch: (doingTask: string) => void
+  stopStopwatch: () => void
+  isRunning: boolean
+}
+
+const StopwatchButtons = ({
+  startStopwatch,
+  doingTask,
+  setDoingTask,
+  isRunning,
+  stopStopwatch,
+}: StopwatchButtonsProps) => {
+  return (
+    <Flex direction="row">
+      <Button
+        color="white"
+        size="lg"
+        borderColor="white"
+        border="1px"
+        _hover={{ bg: 'gray.800' }}
+        _active={{ bg: 'gray.700' }}
+        bg="gray.900"
+        onClick={() => {
+          startStopwatch(doingTask)
+          setDoingTask('')
+        }}
+        display={isRunning ? 'none' : 'Flex'}
+      >
+        スタート
+      </Button>
+      <Button
+        color="white"
+        size="lg"
+        borderColor="white"
+        border="1px"
+        _hover={{ bg: 'gray.800' }}
+        _active={{ bg: 'gray.700' }}
+        bg="gray.900"
+        onClick={() => stopStopwatch()}
+        display={isRunning ? 'Flex' : 'none'}
+      >
+        ストップ
+      </Button>
+    </Flex>
+  )
+}
+
+type DisplayTimeProps = {
+  hour: number
+  minute: number
+  second: number
+}
+
+const DisplayTime = ({ hour, minute, second }: DisplayTimeProps) => {
+  return (
+    <Flex pt={{ base: 0, md: 10 }} direction={'row'} alignItems="center">
+      <Text
+        fontSize={{ base: '6xl', md: '120px' }}
+        color="white"
+        w={{ base: '80%', md: '180px' }}
+        textAlign="center"
+        fontFamily="Roboto Mono"
+      >
+        {hour.toString().padStart(2, '0')}
+      </Text>
+      <Text fontSize={{ base: '6xl', md: '120px' }} color="white">
+        :
+      </Text>
+      <Text
+        fontSize={{ base: '6xl', md: '120px' }}
+        color="white"
+        w={{ base: '80%', md: '180px' }}
+        textAlign="center"
+        fontFamily="Roboto Mono"
+      >
+        {minute.toString().padStart(2, '0')}
+      </Text>
+      <Text fontSize={{ base: '6xl', md: '120px' }} color="white">
+        :
+      </Text>
+      <Text
+        fontSize={{ base: '6xl', md: '120px' }}
+        color="white"
+        w={{ base: '80%', md: '180px' }}
+        textAlign="center"
+        fontFamily="Roboto Mono"
+      >
+        {second.toString().padStart(2, '0')}
+      </Text>
+    </Flex>
+  )
+}
+
+type HistoryContainerProps = {
+  displayWidth: string
+  history: StopwatchHistoryEntity[]
+  resetStopwatch: () => void
+}
+
+const HistoryContainer = ({
+  displayWidth,
+  history,
+  resetStopwatch,
+}: HistoryContainerProps) => {
+  return (
+    <Flex
+      direction="column"
+      h="500px"
+      maxH="500px"
+      overflow="auto"
+      pr={4}
+      w={displayWidth}
+    >
       <Flex justifyContent="right" w={displayWidth} mt={10} mb={4}>
         <Button
           variant="ghost"
@@ -120,18 +186,9 @@ export const Stopwatch = () => {
           リセット
         </Button>
       </Flex>
-      <Flex
-        direction="column"
-        h="500px"
-        maxH="500px"
-        overflow="auto"
-        pr={4}
-        w={displayWidth}
-      >
-        {history.map((h, i) => (
-          <DisplayEvent key={i} {...h} />
-        ))}
-      </Flex>
+      {history.map((h, i) => (
+        <DisplayEvent key={i} {...h} />
+      ))}
     </Flex>
   )
 }
