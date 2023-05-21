@@ -1,6 +1,7 @@
-import { Button, Flex, Text, Input, Spacer } from '@chakra-ui/react'
-import { StopwatchHistoryEntity, useStopwatch } from './useStopwatch'
+import { Button, Flex, Text } from '@chakra-ui/react'
+import { useStopwatch } from './useStopwatch'
 import { useState } from 'react'
+import { Tasks } from './Tasks'
 
 export const Stopwatch = () => {
   const {
@@ -37,21 +38,11 @@ export const Stopwatch = () => {
         stopStopwatch={stopStopwatch}
         isRunning={isRunning}
       />
-      <Flex my={8}>
-        <Input
-          w={displayWidth}
-          value={doingTask}
-          placeholder={"What's next?"}
-          onChange={(e) => setDoingTask(e.target.value)}
-          color={'white'}
-          borderColor="gray.500"
-          _focusVisible={{ borderColor: 'gray.300' }}
-          _hover={{ borderColor: 'gray.300' }}
-        />
-      </Flex>
-      <HistoryContainer
-        displayWidth={displayWidth}
+      <Tasks
         history={history}
+        displayWidth={displayWidth}
+        doingTask={doingTask}
+        setDoingTask={setDoingTask}
         resetStopwatch={resetStopwatch}
       />
     </Flex>
@@ -152,70 +143,4 @@ const DisplayTime = ({ hour, minute, second }: DisplayTimeProps) => {
       </Text>
     </Flex>
   )
-}
-
-type HistoryContainerProps = {
-  displayWidth: string
-  history: StopwatchHistoryEntity[]
-  resetStopwatch: () => void
-}
-
-const HistoryContainer = ({
-  displayWidth,
-  history,
-  resetStopwatch,
-}: HistoryContainerProps) => {
-  return (
-    <Flex
-      direction="column"
-      h="500px"
-      maxH="500px"
-      overflow="auto"
-      pr={4}
-      w={displayWidth}
-    >
-      <Flex justifyContent="right" w={displayWidth} mt={10} mb={4}>
-        <Button
-          variant="ghost"
-          color="white"
-          size="md"
-          borderColor="white"
-          _hover={{ bg: 'gray.700' }}
-          _active={{ bg: 'gray.600' }}
-          bg="gray.900"
-          onClick={() => resetStopwatch()}
-          display={history.length > 0 ? 'Flex' : 'none'}
-        >
-          リセット
-        </Button>
-      </Flex>
-      {history.map((h, i) => (
-        <DisplayEvent key={i} {...h} />
-      ))}
-    </Flex>
-  )
-}
-
-const DisplayEvent = (event: StopwatchHistoryEntity) => {
-  return (
-    <Flex mt={1}>
-      <Text color="white" fontSize="xl" pr={4}>
-        {event.task}
-      </Text>
-      <Spacer />
-      <Text color="white" fontSize="xl">
-        {TranslateToTime(event.start)}
-      </Text>
-      <Text color="white" fontSize="xl">
-        ~
-      </Text>
-      <Text color="white" fontSize="xl">
-        {event.end ? TranslateToTime(event.end) : ''}
-      </Text>
-    </Flex>
-  )
-}
-
-const TranslateToTime = (timestamp: number) => {
-  return new Date(timestamp * 1000).toLocaleTimeString()
 }
