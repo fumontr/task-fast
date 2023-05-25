@@ -1,7 +1,8 @@
 import { Button, Flex, Text } from '@chakra-ui/react'
 import { useStopwatch } from './useStopwatch'
 import { useState } from 'react'
-import { Tasks } from './Tasks'
+import { Task, Tasks } from './Tasks'
+import { startTask, stopTask } from './Notion'
 
 export const Stopwatch = () => {
   const {
@@ -64,6 +65,9 @@ const StopwatchButtons = ({
   isRunning,
   stopStopwatch,
 }: StopwatchButtonsProps) => {
+  const [taskId, setTaskId] = useState<string>('')
+  const [startAt, setStartAt] = useState<string>('')
+
   return (
     <Flex direction="row">
       <Button
@@ -77,6 +81,17 @@ const StopwatchButtons = ({
         onClick={() => {
           startStopwatch(doingTask)
           setDoingTask('')
+          const now = new Date()
+          const start = now.toISOString()
+          const task: Task = {
+            start: start,
+            name: doingTask,
+            tag: 'task-fast',
+            end: null,
+            pageId: null,
+          }
+          startTask(task, setTaskId)
+          setStartAt(start)
         }}
         display={isRunning ? 'none' : 'Flex'}
       >
@@ -90,7 +105,11 @@ const StopwatchButtons = ({
         _hover={{ bg: 'gray.800' }}
         _active={{ bg: 'gray.700' }}
         bg="gray.900"
-        onClick={() => stopStopwatch()}
+        onClick={() => {
+          stopStopwatch()
+          const now = new Date()
+          stopTask(now.toISOString(), taskId, startAt)
+        }}
         display={isRunning ? 'Flex' : 'none'}
       >
         ストップ

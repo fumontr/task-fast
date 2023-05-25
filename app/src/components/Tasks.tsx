@@ -10,6 +10,14 @@ type TasksProps = {
   resetStopwatch: () => void
 }
 
+export type Task = {
+  start: string
+  end: string | null
+  name: string
+  tag: string
+  pageId: string | null
+}
+
 export const Tasks = ({
   history,
   displayWidth,
@@ -24,7 +32,9 @@ export const Tasks = ({
           w={displayWidth}
           value={doingTask}
           placeholder={"What's next?"}
-          onChange={(e) => setDoingTask(e.target.value)}
+          onChange={(e) => {
+            setDoingTask(e.target.value)
+          }}
           color={'white'}
           borderColor="gray.500"
           _focusVisible={{ borderColor: 'gray.300' }}

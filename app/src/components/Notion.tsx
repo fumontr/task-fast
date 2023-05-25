@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { NotionDataType } from '../model/notion'
 import axios from 'axios'
 import { Flex, Spacer, Text } from '@chakra-ui/react'
+import { Task } from './Tasks'
 
 export const Notion = () => {
   const [notionData, setNotionData] = useState<NotionDataType[]>([])
@@ -78,4 +79,45 @@ const calcElapseTime = (start: string, end: string) => {
     .padStart(2, '0')
   const second = (elapseTime % 60).toString().padStart(2, '0')
   return `${hour}:${minute}:${second}`
+}
+
+export const startTask = (task: Task, setTaskId: (id: string) => void) => {
+  const postTask: Task = {
+    name: task.name,
+    start: task.start,
+    end: task.end,
+    tag: 'Create Task Test',
+    pageId: null,
+  }
+
+  console.log('postTask:', postTask)
+  axios
+    .post('/api/task', postTask)
+    .then((res) => {
+      console.log(res)
+      setTaskId(res.data.data.id)
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+}
+
+export const stopTask = (end: string, id: string, start: string) => {
+  const postTask: Task = {
+    name: '',
+    start: start,
+    end: end,
+    tag: 'Create Task Test',
+    pageId: id,
+  }
+
+  console.log('postTask:', postTask)
+  axios
+    .patch('/api/task', postTask)
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      console.error(err)
+    })
 }
