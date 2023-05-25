@@ -3,6 +3,28 @@ type User = {
   id: string
 }
 
+type Annotations = {
+  bold: boolean
+  italic: boolean
+  strikethrough: boolean
+  underline: boolean
+  code: boolean
+  color: string
+}
+
+type TextContent = {
+  content: string
+  link: null | string
+}
+
+type Text = {
+  type: string
+  text: TextContent
+  annotations: Annotations
+  plain_text: string
+  href: null | string
+}
+
 type PropertyTitleContent = {
   content: string
   link: null | string
@@ -44,6 +66,16 @@ type Properties = {
     id: string
     type: string
     title: PropertyTitle[]
+  }
+  Start: {
+    id: string
+    type: string
+    rich_text: Text[]
+  }
+  End: {
+    id: string
+    type: string
+    rich_text: Text[]
   }
 }
 

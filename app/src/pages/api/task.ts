@@ -57,12 +57,26 @@ const CreateTask = (url: string, body: any, config: AxiosRequestConfig) => {
           },
         ],
       },
-      Time: {
-        date: {
-          time_zone: 'Asia/Tokyo',
-          start: body.start,
-          end: body.end,
-        },
+      Start: {
+        rich_text: [
+          {
+            type: 'text',
+            text: {
+              content: body.start,
+              link: null,
+            },
+            annotations: {
+              bold: false,
+              italic: false,
+              strikethrough: false,
+              underline: false,
+              code: false,
+              color: 'default',
+            },
+            plain_text: body.start,
+            href: null,
+          },
+        ],
       },
     },
   }
@@ -74,12 +88,26 @@ const UpdateTask = (url: string, body: any, config: AxiosRequestConfig) => {
   const data = {
     parent: { database_id: databaseId },
     properties: {
-      Time: {
-        date: {
-          time_zone: 'Asia/Tokyo',
-          start: body.start,
-          end: body.end,
-        },
+      End: {
+        rich_text: [
+          {
+            type: 'text',
+            text: {
+              content: body.end,
+              link: null,
+            },
+            annotations: {
+              bold: false,
+              italic: false,
+              strikethrough: false,
+              underline: false,
+              code: false,
+              color: 'default',
+            },
+            plain_text: body.end,
+            href: null,
+          },
+        ],
       },
     },
   }

@@ -43,6 +43,7 @@ export const useStopwatch = () => {
         },
       ]
     })
+    setElapseTime(0)
   }, [])
 
   const resetStopwatch = useCallback(() => {
