@@ -24,7 +24,7 @@ export const Stopwatch = () => {
       bg="gray.900"
       direction="column"
     >
-      <DisplayTime hour={hour} minute={minute} second={second} />
+      <DisplayTime hours={hour} minutes={minute} seconds={second} />
       <StopwatchButtons
         doingTask={doingTask}
         setDoingTask={setDoingTask}

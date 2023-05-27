@@ -43,9 +43,10 @@ export const Notion = ({ displayWidth }: { displayWidth: string }) => {
 const NotionTaskContainer = (task: NotionDataType) => {
   const taskName: string = task.properties.Name.title[0].plain_text
   const start = dayjs(task.properties.Start.rich_text[0].plain_text)
- const end = task.properties.End.rich_text.length > 0 
-  ? dayjs(task.properties.End.rich_text[0].plain_text)
-  : null;
+  const end =
+    task.properties.End.rich_text.length > 0
+      ? dayjs(task.properties.End.rich_text[0].plain_text)
+      : null
 
   const startStr = convertToTimeString(start)
   const endStr = convertToTimeString(end)

@@ -1,15 +1,15 @@
 import { Flex, Text } from '@chakra-ui/react'
 
 type DisplayTimeProps = {
-  hour: number
-  minute: number
-  second: number
+  hours: number
+  minutes: number
+  seconds: number
 }
 
-export const DisplayTime = ({ hour, minute, second }: DisplayTimeProps) => {
-  const hourStr = hour.toString().padStart(2, '0')
-  const minuteStr = minute.toString().padStart(2, '0')
-  const secondStr = second.toString().padStart(2, '0')
+export const DisplayTime = ({ hours, minutes, seconds }: DisplayTimeProps) => {
+  const hourStr = hours.toString().padStart(2, '0')
+  const minuteStr = minutes.toString().padStart(2, '0')
+  const secondStr = seconds.toString().padStart(2, '0')
 
   return (
     <Flex pt={{ base: 0, md: 10 }} direction={'row'} alignItems="center">
