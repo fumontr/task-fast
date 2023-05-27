@@ -14,7 +14,7 @@ type Annotations = {
 
 type TextContent = {
   content: string
-  link: null | string
+  link: string | null
 }
 
 type Text = {
