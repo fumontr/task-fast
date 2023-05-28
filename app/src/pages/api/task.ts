@@ -33,7 +33,11 @@ export default async function handler(
   } else if (req.method == 'PATCH') {
     const requestBody = createUpdateTaskBody(body.end)
     try {
-      const response = await axios.patch(url, requestBody, config)
+      const response = await axios.patch(
+        `${url}/${body.pageId}`,
+        requestBody,
+        config
+      )
       res.status(200).json({ message: 'Success', data: response.data })
     } catch (err) {
       res.status(500).json({ message: 'Failed' })

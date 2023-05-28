@@ -10,6 +10,7 @@ type StopwatchButtonsProps = {
   startStopwatch: (doingTask: string) => void
   stopStopwatch: () => void
   isRunning: boolean
+  setTasks: (value: Task[] | ((prevValue: Task[]) => Task[])) => void
 }
 
 export const StopwatchButtons = ({
@@ -18,6 +19,7 @@ export const StopwatchButtons = ({
   setDoingTask,
   isRunning,
   stopStopwatch,
+  setTasks,
 }: StopwatchButtonsProps) => {
   const [taskId, setTaskId] = useState<string>('')
   const [startAt, setStartAt] = useState<string>('')
@@ -34,13 +36,20 @@ export const StopwatchButtons = ({
     }
     startTask(task, setTaskId)
     setStartAt(start)
-    setDoingTask('') // Task clear
+    setTasks((prevTasks) => [...prevTasks, task])
   }
 
   const handleStop = () => {
     stopStopwatch()
-    stopTask(dayjs().format(), taskId, startAt)
+    const end = dayjs().format()
+    stopTask(end, taskId, startAt)
     setDoingTask('') // Task clear
+    setTasks((prevTasks) => {
+      const newTasks = [...prevTasks]
+      const index = newTasks.findIndex((task) => task.start === startAt)
+      newTasks[index].end = end
+      return newTasks
+    })
   }
 
   return (

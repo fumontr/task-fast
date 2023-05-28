@@ -30,11 +30,15 @@ export default async function handler(
 }
 
 const transformToTask = (data: NotionTask): Task => {
+  let end = null
+  if (data.properties.End.rich_text.length !== 0) {
+    end = data.properties.End.rich_text[0].text.content
+  }
   return {
     pageId: data.id,
     name: data.properties.Name.title[0].text.content,
     tag: data.properties.Tag.multi_select[0].name,
     start: data.properties.Start.rich_text[0].text.content,
-    end: data.properties.End.rich_text[0].text.content,
+    end: end,
   }
 }

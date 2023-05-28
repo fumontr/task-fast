@@ -89,11 +89,10 @@ export const startTask = (task: Task, setTaskId: (id: string) => void) => {
   axios
     .post('/api/task', postTask)
     .then((res) => {
-      // console.log(res)
       setTaskId(res.data.data.id)
     })
     .catch((err) => {
-      // console.error(err)
+      console.error(err)
     })
 }
 
@@ -110,9 +109,9 @@ export const stopTask = (end: string, id: string, start: string) => {
   axios
     .patch('/api/task', postTask)
     .then((res) => {
-      // console.log(res)
+      console.log(res)
     })
     .catch((err) => {
-      // console.error(err)
+      console.error(err)
     })
 }

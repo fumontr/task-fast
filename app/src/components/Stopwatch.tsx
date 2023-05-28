@@ -17,7 +17,6 @@ export const Stopwatch = () => {
       .post(url, data)
       .then((res) => {
         setTasks(res.data.data)
-        // setIsLoading(false)
       })
       .catch((err) => {
         console.error(err)
@@ -49,6 +48,7 @@ export const Stopwatch = () => {
         startStopwatch={startStopwatch}
         stopStopwatch={stopStopwatch}
         isRunning={isRunning}
+        setTasks={setTasks}
       />
       <Tasks doingTask={doingTask} setDoingTask={setDoingTask} tasks={tasks} />
     </Flex>
