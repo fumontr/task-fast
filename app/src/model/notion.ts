@@ -79,7 +79,7 @@ type Properties = {
   }
 }
 
-type NotionDataType = {
+type NotionTask = {
   object: string
   id: string
   created_time: string
@@ -101,5 +101,5 @@ export type {
   PropertyTitle,
   PropertyDate,
   Properties,
-  NotionDataType,
+  NotionTask,
 }

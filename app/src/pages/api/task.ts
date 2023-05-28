@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import axios, { AxiosRequestConfig } from 'axios'
+import axios from 'axios'
 
 const databaseId = process.env.DB_ID
 const secret = process.env.SECRET_KEY
@@ -11,7 +11,6 @@ export default async function handler(
   const url = 'https://api.notion.com/v1/pages'
   const notionVersion = '2021-08-16'
 
-  console.log('req.body: ', req.body)
   const body = req.body
 
   const config = {

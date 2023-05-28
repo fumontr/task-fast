@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react'
-import { NotionDataType } from '../model/notion'
 import axios from 'axios'
 import { Flex, Spacer, Text } from '@chakra-ui/react'
-import { Task } from './Tasks'
+import type { Task } from '../model/task'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 
@@ -13,10 +11,8 @@ export const Notion = ({
   tasks,
 }: {
   displayWidth: string
-  tasks: NotionDataType[]
+  tasks: Task[]
 }) => {
-  // const [notionData, setNotionData] = useState<NotionDataType[]>([])
-
   return (
     <Flex
       h="500px"
@@ -28,19 +24,16 @@ export const Notion = ({
       direction="column"
     >
       {tasks.map((data) => {
-        return <NotionTaskContainer key={data.id} {...data} />
+        return <NotionTaskContainer key={data.pageId} {...data} />
       })}
     </Flex>
   )
 }
 
-const NotionTaskContainer = (task: NotionDataType) => {
-  const taskName: string = task.properties.Name.title[0].plain_text
-  const start = dayjs(task.properties.Start.rich_text[0].plain_text)
-  const end =
-    task.properties.End.rich_text.length > 0
-      ? dayjs(task.properties.End.rich_text[0].plain_text)
-      : null
+const NotionTaskContainer = (task: Task) => {
+  const taskName: string = task.name
+  const start = dayjs(task.start)
+  const end = task.end !== null ? dayjs(task.end) : null
 
   const startStr = convertToTimeString(start)
   const endStr = convertToTimeString(end)

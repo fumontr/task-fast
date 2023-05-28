@@ -5,17 +5,19 @@ import { Tasks } from './Tasks'
 import { DisplayTime } from './DisplayTime'
 import { StopwatchButtons } from './StopwatchButtons'
 import axios from 'axios'
-import { NotionDataType } from '../model/notion'
+import { Task } from '../model/task'
 
 export const Stopwatch = () => {
-  const [tasks, setTasks] = useState<NotionDataType[]>([])
+  const [tasks, setTasks] = useState<Task[]>([])
+
   useEffect(() => {
     const url = '/api/notion'
     const data = {}
     axios
       .post(url, data)
       .then((res) => {
-        setTasks(res.data.data.results)
+        setTasks(res.data.data)
+        // setIsLoading(false)
       })
       .catch((err) => {
         console.error(err)

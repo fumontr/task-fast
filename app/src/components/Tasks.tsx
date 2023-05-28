@@ -1,19 +1,11 @@
 import { Flex, Input } from '@chakra-ui/react'
 import { Notion } from './Notion'
-import { NotionDataType } from '../model/notion'
+import { Task } from '../model/task'
 
 type TasksProps = {
   doingTask: string
   setDoingTask: (task: string) => void
-  tasks: NotionDataType[]
-}
-
-export type Task = {
-  start: string
-  end: string | null
-  name: string
-  tag: string
-  pageId: string | null
+  tasks: Task[]
 }
 
 export const Tasks = ({ doingTask, setDoingTask, tasks }: TasksProps) => {

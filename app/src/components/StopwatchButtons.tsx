@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, Flex } from '@chakra-ui/react'
-import { Task } from './Tasks'
+import type { Task } from '../model/task'
 import { startTask, stopTask } from './Notion'
 import dayjs from 'dayjs'
 
