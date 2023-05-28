@@ -1,81 +1,117 @@
-import { useEffect, useState } from 'react'
-import { NotionDataType } from '../model/notion'
 import axios from 'axios'
 import { Flex, Spacer, Text } from '@chakra-ui/react'
+import type { Task } from '../model/task'
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 
-export const Notion = () => {
-  const [notionData, setNotionData] = useState<NotionDataType[]>([])
-  useEffect(() => {
-    const url = '/api/notion'
-    const data = {}
-    axios
-      .post(url, data)
-      .then((res) => {
-        setNotionData(res.data.data.results)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-  }, [])
+dayjs.extend(duration)
 
+export const Notion = ({
+  displayWidth,
+  tasks,
+}: {
+  displayWidth: string
+  tasks: Task[]
+}) => {
   return (
     <Flex
-      w="720px"
       h="500px"
-      justifyContent="center"
+      maxH="500px"
+      overflow="auto"
+      pr={4}
+      w={displayWidth}
       alignItems="center"
       direction="column"
     >
-      {/*  display notionData */}
-      {notionData.map((data) => {
-        return <NotionTaskContainer key={data.id} {...data} />
+      {tasks.map((data) => {
+        return <NotionTaskContainer key={data.pageId} {...data} />
       })}
     </Flex>
   )
 }
 
-const NotionTaskContainer = (task: NotionDataType) => {
-  const start = convertToTime(task.properties.Time.date.start)
-  const end = convertToTime(task.properties.Time.date.end)
-  const elapseTime = calcElapseTime(
-    task.properties.Time.date.start,
-    task.properties.Time.date.end
-  )
+const NotionTaskContainer = (task: Task) => {
+  const taskName: string = task.name
+  const start = dayjs(task.start)
+  const end = task.end !== null ? dayjs(task.end) : null
+
+  const startStr = convertToTimeString(start)
+  const endStr = convertToTimeString(end)
+  const elapseTime = calcElapseTime(start, end)
+
   return (
-    <Flex w={'600px'}>
-      <Flex px={2}>
-        <Text color="white">{task.properties.Name.title[0].plain_text}</Text>
+    <Flex w="full">
+      <Flex w="200px">
+        <Text color="white">{taskName}</Text>
       </Flex>
       <Spacer />
-      <Flex px={2}>
-        <Text color="white">{start}</Text>
+      <Flex px={2} w="60px">
+        <Text color="white">{startStr}</Text>
       </Flex>
       <Text color="white">~</Text>
-      <Flex px={2}>
-        <Text color="white">{end}</Text>
+      <Flex px={2} w="60px">
+        <Text color="white">{endStr}</Text>
       </Flex>
-      <Flex px={2}>
+      <Flex px={2} w="100px" justifyContent="right">
         <Text color="white">{elapseTime}</Text>
       </Flex>
     </Flex>
   )
 }
 
-const convertToTime = (time: string) => {
-  const date = new Date(time)
-  const hour = date.getHours().toString().padStart(2, '0')
-  const minute = date.getMinutes().toString().padStart(2, '0')
-  return `${hour}:${minute}`
+const convertToTimeString = (time: dayjs.Dayjs | null): string | null => {
+  if (time === null) return null
+  return time.format('HH:mm')
 }
 
-const calcElapseTime = (start: string, end: string) => {
-  const startDate = new Date(start)
-  const endDate = new Date(end)
-  const elapseTime = endDate.getTime() - startDate.getTime()
-  const hour = Math.floor((elapseTime / (60 * 60)) % 24).toString()
-  const minute = Math.floor((elapseTime / 60) % 60)
-    .toString()
-    .padStart(2, '0')
-  const second = (elapseTime % 60).toString().padStart(2, '0')
-  return `${hour}:${minute}:${second}`
+const calcElapseTime = (
+  start: dayjs.Dayjs,
+  end: dayjs.Dayjs | null
+): string | null => {
+  if (end === null) return null
+  const elapseTime = dayjs.duration(end.diff(start))
+  const hours = elapseTime.hours().toString().padStart(2, '0')
+  const minutes = elapseTime.minutes().toString().padStart(2, '0')
+  const seconds = elapseTime.seconds().toString().padStart(2, '0')
+  return `${hours}:${minutes}:${seconds}`
+}
+
+export const startTask = (task: Task, setTaskId: (id: string) => void) => {
+  const postTask: Task = {
+    name: task.name,
+    start: task.start,
+    end: task.end,
+    tag: task.tag,
+    pageId: null,
+  }
+
+  console.log('postTask:', postTask)
+  axios
+    .post('/api/task', postTask)
+    .then((res) => {
+      setTaskId(res.data.data.id)
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+}
+
+export const stopTask = (end: string, id: string, start: string) => {
+  const postTask: Task = {
+    name: '',
+    start: start,
+    end: end,
+    tag: '',
+    pageId: id,
+  }
+
+  console.log('postTask:', postTask)
+  axios
+    .patch('/api/task', postTask)
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      console.error(err)
+    })
 }

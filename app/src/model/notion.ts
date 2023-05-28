@@ -3,6 +3,28 @@ type User = {
   id: string
 }
 
+type Annotations = {
+  bold: boolean
+  italic: boolean
+  strikethrough: boolean
+  underline: boolean
+  code: boolean
+  color: string
+}
+
+type TextContent = {
+  content: string
+  link: string | null
+}
+
+type Text = {
+  type: string
+  text: TextContent
+  annotations: Annotations
+  plain_text: string
+  href: null | string
+}
+
 type PropertyTitleContent = {
   content: string
   link: null | string
@@ -45,9 +67,19 @@ type Properties = {
     type: string
     title: PropertyTitle[]
   }
+  Start: {
+    id: string
+    type: string
+    rich_text: Text[]
+  }
+  End: {
+    id: string
+    type: string
+    rich_text: Text[]
+  }
 }
 
-type NotionDataType = {
+type NotionTask = {
   object: string
   id: string
   created_time: string
@@ -69,5 +101,5 @@ export type {
   PropertyTitle,
   PropertyDate,
   Properties,
-  NotionDataType,
+  NotionTask,
 }
