@@ -4,7 +4,10 @@ import axios, { AxiosRequestConfig } from 'axios'
 const databaseId = process.env.DB_ID
 const secret = process.env.SECRET_KEY
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const url = 'https://api.notion.com/v1/pages'
   const notionVersion = '2021-08-16'
 
@@ -19,33 +22,35 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       'Allow-Control-Allow-Origin': '*',
     },
   }
-  let request = null
-  if (req.method == 'POST') {
-    request = CreateTask(url, body, config)
-  } else {
-    request = UpdateTask(url, body, config)
-  }
 
-  request
-    .then((resp) => {
-      console.log(resp)
-      res.status(200).json({ message: 'Success', data: resp.data })
-    })
-    .catch((err) => {
-      console.error(err)
+  if (req.method == 'POST') {
+    const requestBody = createCreateTaskBody(body.name, body.tag, body.start)
+    try {
+      const response = await axios.post(url, requestBody, config)
+      res.status(200).json({ message: 'Success', data: response.data })
+    } catch (err) {
       res.status(500).json({ message: 'Failed' })
-    })
+    }
+  } else if (req.method == 'PATCH') {
+    const requestBody = createUpdateTaskBody(body.end)
+    try {
+      const response = await axios.patch(url, requestBody, config)
+      res.status(200).json({ message: 'Success', data: response.data })
+    } catch (err) {
+      res.status(500).json({ message: 'Failed' })
+    }
+  }
 }
 
-const CreateTask = (url: string, body: any, config: AxiosRequestConfig) => {
-  const data = {
+const createCreateTaskBody = (name: string, tag: string, start: string) => {
+  return {
     parent: { database_id: databaseId },
     properties: {
       title: {
         title: [
           {
             text: {
-              content: body.name,
+              content: name,
             },
           },
         ],
@@ -53,7 +58,7 @@ const CreateTask = (url: string, body: any, config: AxiosRequestConfig) => {
       Tag: {
         multi_select: [
           {
-            name: body.tag,
+            name: tag,
           },
         ],
       },
@@ -62,7 +67,7 @@ const CreateTask = (url: string, body: any, config: AxiosRequestConfig) => {
           {
             type: 'text',
             text: {
-              content: body.start,
+              content: start,
               link: null,
             },
             annotations: {
@@ -73,19 +78,17 @@ const CreateTask = (url: string, body: any, config: AxiosRequestConfig) => {
               code: false,
               color: 'default',
             },
-            plain_text: body.start,
+            plain_text: start,
             href: null,
           },
         ],
       },
     },
   }
-
-  return axios.post(url, data, config)
 }
 
-const UpdateTask = (url: string, body: any, config: AxiosRequestConfig) => {
-  const data = {
+const createUpdateTaskBody = (end: string) => {
+  return {
     parent: { database_id: databaseId },
     properties: {
       End: {
@@ -93,7 +96,7 @@ const UpdateTask = (url: string, body: any, config: AxiosRequestConfig) => {
           {
             type: 'text',
             text: {
-              content: body.end,
+              content: end,
               link: null,
             },
             annotations: {
@@ -104,13 +107,11 @@ const UpdateTask = (url: string, body: any, config: AxiosRequestConfig) => {
               code: false,
               color: 'default',
             },
-            plain_text: body.end,
+            plain_text: end,
             href: null,
           },
         ],
       },
     },
   }
-
-  return axios.patch(`${url}/${body.pageId}`, data, config)
 }
