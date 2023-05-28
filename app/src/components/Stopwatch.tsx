@@ -1,11 +1,27 @@
 import { Flex } from '@chakra-ui/react'
 import { useStopwatch } from './useStopwatch'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Tasks } from './Tasks'
 import { DisplayTime } from './DisplayTime'
 import { StopwatchButtons } from './StopwatchButtons'
+import axios from 'axios'
+import { NotionDataType } from '../model/notion'
 
 export const Stopwatch = () => {
+  const [tasks, setTasks] = useState<NotionDataType[]>([])
+  useEffect(() => {
+    const url = '/api/notion'
+    const data = {}
+    axios
+      .post(url, data)
+      .then((res) => {
+        setTasks(res.data.data.results)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }, [])
+
   const { isRunning, elapseTime, startStopwatch, stopStopwatch } =
     useStopwatch()
 
@@ -32,7 +48,7 @@ export const Stopwatch = () => {
         stopStopwatch={stopStopwatch}
         isRunning={isRunning}
       />
-      <Tasks doingTask={doingTask} setDoingTask={setDoingTask} />
+      <Tasks doingTask={doingTask} setDoingTask={setDoingTask} tasks={tasks} />
     </Flex>
   )
 }

@@ -1,9 +1,11 @@
 import { Flex, Input } from '@chakra-ui/react'
 import { Notion } from './Notion'
+import { NotionDataType } from '../model/notion'
 
 type TasksProps = {
   doingTask: string
   setDoingTask: (task: string) => void
+  tasks: NotionDataType[]
 }
 
 export type Task = {
@@ -14,7 +16,7 @@ export type Task = {
   pageId: string | null
 }
 
-export const Tasks = ({ doingTask, setDoingTask }: TasksProps) => {
+export const Tasks = ({ doingTask, setDoingTask, tasks }: TasksProps) => {
   const displayWidth = '600px'
   return (
     <>
@@ -32,7 +34,7 @@ export const Tasks = ({ doingTask, setDoingTask }: TasksProps) => {
           _hover={{ borderColor: 'gray.300' }}
         />
       </Flex>
-      <Notion displayWidth={displayWidth} />
+      <Notion displayWidth={displayWidth} tasks={tasks} />
     </>
   )
 }

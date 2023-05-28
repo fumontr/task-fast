@@ -8,20 +8,14 @@ import duration from 'dayjs/plugin/duration'
 
 dayjs.extend(duration)
 
-export const Notion = ({ displayWidth }: { displayWidth: string }) => {
-  const [notionData, setNotionData] = useState<NotionDataType[]>([])
-  useEffect(() => {
-    const url = '/api/notion'
-    const data = {}
-    axios
-      .post(url, data)
-      .then((res) => {
-        setNotionData(res.data.data.results)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-  }, [])
+export const Notion = ({
+  displayWidth,
+  tasks,
+}: {
+  displayWidth: string
+  tasks: NotionDataType[]
+}) => {
+  // const [notionData, setNotionData] = useState<NotionDataType[]>([])
 
   return (
     <Flex
@@ -33,7 +27,7 @@ export const Notion = ({ displayWidth }: { displayWidth: string }) => {
       alignItems="center"
       direction="column"
     >
-      {notionData.map((data) => {
+      {tasks.map((data) => {
         return <NotionTaskContainer key={data.id} {...data} />
       })}
     </Flex>
