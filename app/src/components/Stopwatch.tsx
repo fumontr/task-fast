@@ -3,28 +3,36 @@ import { useStopwatch } from './useStopwatch'
 import { useEffect, useState } from 'react'
 import { Tasks } from './Tasks'
 import { DisplayTime } from './DisplayTime'
-import { StopwatchButtons } from './StopwatchButtons'
 import axios from 'axios'
 import { Task } from '../model/task'
+import { StopwatchButtons } from './StopwatchButtons'
 
 export const Stopwatch = () => {
+  const { isRunning, elapseTime, startStopwatch, stopStopwatch } =
+    useStopwatch()
+
   const [tasks, setTasks] = useState<Task[]>([])
 
   useEffect(() => {
-    const url = '/api/notion'
-    const data = {}
-    axios
-      .post(url, data)
-      .then((res) => {
+    const fetchTasks = async () => {
+      const url = '/api/notion' // TODO: Pathを適切な内容に変更する
+      const filter = {}
+      try {
+        const res = await axios.post(url, filter)
         setTasks(res.data.data)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-  }, [])
 
-  const { isRunning, elapseTime, startStopwatch, stopStopwatch } =
-    useStopwatch()
+        // すでに実行中のタスクが見つかったら、ストップウォッチを適切な経過時間で開始する
+        const ongoingTask = res.data.data.find((task: Task) => !task.end)
+        if (ongoingTask) {
+          startStopwatch(ongoingTask.start)
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    fetchTasks()
+  }, [])
 
   const hour = Math.floor((elapseTime / (60 * 60)) % 24)
   const minute = Math.floor((elapseTime / 60) % 60)
@@ -49,6 +57,7 @@ export const Stopwatch = () => {
         stopStopwatch={stopStopwatch}
         isRunning={isRunning}
         setTasks={setTasks}
+        tasks={tasks}
       />
       <Tasks doingTask={doingTask} setDoingTask={setDoingTask} tasks={tasks} />
     </Flex>

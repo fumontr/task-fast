@@ -46,14 +46,20 @@ const NotionTaskContainer = (task: Task) => {
       </Flex>
       <Spacer />
       <Flex px={2} w="60px">
-        <Text color="white">{startStr}</Text>
+        <Text color="white" fontFamily="Roboto Mono">
+          {startStr}
+        </Text>
       </Flex>
       <Text color="white">~</Text>
       <Flex px={2} w="60px">
-        <Text color="white">{endStr}</Text>
+        <Text color="white" fontFamily="Roboto Mono">
+          {endStr}
+        </Text>
       </Flex>
       <Flex px={2} w="100px" justifyContent="right">
-        <Text color="white">{elapseTime}</Text>
+        <Text color="white" fontFamily="Roboto Mono">
+          {elapseTime}
+        </Text>
       </Flex>
     </Flex>
   )
@@ -76,27 +82,49 @@ const calcElapseTime = (
   return `${hours}:${minutes}:${seconds}`
 }
 
-export const startTask = (task: Task, setTaskId: (id: string) => void) => {
+export const startTask = (
+  task: Task,
+  setTasks: (value: Task[] | ((prevValue: Task[]) => Task[])) => void
+) => {
   const postTask: Task = {
     name: task.name,
     start: task.start,
     end: task.end,
     tag: task.tag,
-    pageId: null,
+    pageId: 'frontend-temp-pageId',
   }
 
-  console.log('postTask:', postTask)
+  setTasks((prevTasks) => {
+    return [...prevTasks, postTask]
+  })
+
   axios
     .post('/api/task', postTask)
     .then((res) => {
-      setTaskId(res.data.data.id)
+      const newTask = {
+        ...postTask,
+        pageId: res.data.data.id,
+      }
+      setTasks((prevTasks) => {
+        const newTasks = [...prevTasks]
+        const index = newTasks.findIndex(
+          (task) => task.pageId === 'frontend-temp-pageId'
+        )
+        newTasks[index] = newTask
+        return newTasks
+      })
     })
     .catch((err) => {
       console.error(err)
     })
 }
 
-export const stopTask = (end: string, id: string, start: string) => {
+export const stopTask = (end: string, id: string | null, start: string) => {
+  if (id === null) {
+    console.log('task id is null')
+    return
+  }
+
   const postTask: Task = {
     name: '',
     start: start,
@@ -105,7 +133,6 @@ export const stopTask = (end: string, id: string, start: string) => {
     pageId: id,
   }
 
-  console.log('postTask:', postTask)
   axios
     .patch('/api/task', postTask)
     .then((res) => {

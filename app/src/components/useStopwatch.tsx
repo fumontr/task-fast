@@ -1,56 +1,23 @@
 import { useCallback, useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 
-export type StopwatchHistoryEntity = {
-  start: number
-  end: number | null
-  task: string
-}
-
 export const useStopwatch = () => {
   const [isRunning, setIsRunning] = useState(false)
   const [startAt, setStartAt] = useState(dayjs())
   const [elapseTime, setElapseTime] = useState<number>(0)
-  const [stoppedElapsedTime, setStoppedElapsedTime] = useState<number>(0)
-  const [history, setHistory] = useState<StopwatchHistoryEntity[]>([])
 
-  const startStopwatch = useCallback((task: string) => {
-    const now = dayjs()
+  const startStopwatch = useCallback((startAt: string) => {
+    const start = startAt ? dayjs(startAt) : dayjs()
     setIsRunning(true)
-    setStartAt(now)
-    setElapseTime(stoppedElapsedTime)
-    setHistory((prev) => [
-      ...prev,
-      {
-        start: now.unix(),
-        end: null,
-        task: task,
-      },
-    ])
+    setStartAt(start)
+    // 現在時刻 - start で経過時間を計算. number型で保持
+    const elapsed = dayjs().diff(start, 'second')
+    setElapseTime(elapsed)
   }, [])
 
   const stopStopwatch = useCallback(() => {
     setIsRunning(false)
-    setStoppedElapsedTime(elapseTime)
-    const now = dayjs()
-    setHistory((prev) => {
-      const lastEntity = prev[prev.length - 1]
-      return [
-        ...prev.slice(0, -1),
-        {
-          ...lastEntity,
-          end: now.unix(),
-        },
-      ]
-    })
     setElapseTime(0)
-  }, [])
-
-  const resetStopwatch = useCallback(() => {
-    setIsRunning(false)
-    setElapseTime(0)
-    setStoppedElapsedTime(0)
-    setHistory([])
   }, [])
 
   useEffect(() => {
@@ -66,7 +33,5 @@ export const useStopwatch = () => {
     elapseTime,
     startStopwatch,
     stopStopwatch,
-    resetStopwatch,
-    history,
   }
 }
