@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react'
 import { useStopwatch } from '../../hooks/useStopwatch/useStopwatch'
 import { useEffect, useState } from 'react'
-import { Tasks } from '../Tasks/Tasks'
+import { TaskManager } from '../TaskManager'
 import { DisplayTime } from './DisplayTime'
 import axios from 'axios'
 import { Task } from '../../models/task'
@@ -25,6 +25,7 @@ export const Stopwatch = () => {
         const ongoingTask = res.data.data.find((task: Task) => !task.end)
         if (ongoingTask) {
           startStopwatch(ongoingTask.start)
+          setDoingTaskName(ongoingTask.name)
         }
       } catch (err) {
         console.error(err)
@@ -38,7 +39,7 @@ export const Stopwatch = () => {
   const minute = Math.floor((elapseTime / 60) % 60)
   const second = elapseTime % 60
 
-  const [doingTask, setDoingTask] = useState<string>('')
+  const [doingTaskName, setDoingTaskName] = useState<string>('')
 
   return (
     <Flex
@@ -51,15 +52,19 @@ export const Stopwatch = () => {
     >
       <DisplayTime hours={hour} minutes={minute} seconds={second} />
       <StopwatchButtons
-        doingTask={doingTask}
-        setDoingTask={setDoingTask}
+        doingTask={doingTaskName}
+        setDoingTask={setDoingTaskName}
         startStopwatch={startStopwatch}
         stopStopwatch={stopStopwatch}
         isRunning={isRunning}
         setTasks={setTasks}
         tasks={tasks}
       />
-      <Tasks doingTask={doingTask} setDoingTask={setDoingTask} tasks={tasks} />
+      <TaskManager
+        doingTaskName={doingTaskName}
+        setDoingTaskName={setDoingTaskName}
+        tasks={tasks}
+      />
     </Flex>
   )
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button, Flex } from '@chakra-ui/react'
 import type { Task } from '../../models/task'
-import { startTask, stopTask } from '../Tasks/Notion'
+import { startTask, stopTask } from '../Tasks/util'
 import dayjs from 'dayjs'
 
 type StopwatchButtonsProps = {

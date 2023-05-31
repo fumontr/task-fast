@@ -1,76 +1,15 @@
-import axios from 'axios'
-import { Flex, Spacer, Text } from '@chakra-ui/react'
-import type { Task } from '../../models/task'
 import dayjs from 'dayjs'
-import duration from 'dayjs/plugin/duration'
+import { Task } from '../../models/task'
+import axios from 'axios'
 
-dayjs.extend(duration)
-
-export const Notion = ({
-  displayWidth,
-  tasks,
-}: {
-  displayWidth: string
-  tasks: Task[]
-}) => {
-  return (
-    <Flex
-      h="500px"
-      maxH="500px"
-      overflow="auto"
-      pr={4}
-      w={displayWidth}
-      alignItems="center"
-      direction="column"
-    >
-      {tasks.map((data) => {
-        return <NotionTaskContainer key={data.pageId} {...data} />
-      })}
-    </Flex>
-  )
-}
-
-const NotionTaskContainer = (task: Task) => {
-  const taskName: string = task.name
-  const start = dayjs(task.start)
-  const end = task.end !== null ? dayjs(task.end) : null
-
-  const startStr = convertToTimeString(start)
-  const endStr = convertToTimeString(end)
-  const elapseTime = calcElapseTime(start, end)
-
-  return (
-    <Flex w="full">
-      <Flex w="200px">
-        <Text color="white">{taskName}</Text>
-      </Flex>
-      <Spacer />
-      <Flex px={2} w="60px">
-        <Text color="white" fontFamily="Roboto Mono">
-          {startStr}
-        </Text>
-      </Flex>
-      <Text color="white">~</Text>
-      <Flex px={2} w="60px">
-        <Text color="white" fontFamily="Roboto Mono">
-          {endStr}
-        </Text>
-      </Flex>
-      <Flex px={2} w="100px" justifyContent="right">
-        <Text color="white" fontFamily="Roboto Mono">
-          {elapseTime}
-        </Text>
-      </Flex>
-    </Flex>
-  )
-}
-
-const convertToTimeString = (time: dayjs.Dayjs | null): string | null => {
+export const convertToTimeString = (
+  time: dayjs.Dayjs | null
+): string | null => {
   if (time === null) return null
   return time.format('HH:mm')
 }
 
-const calcElapseTime = (
+export const calcElapseTime = (
   start: dayjs.Dayjs,
   end: dayjs.Dayjs | null
 ): string | null => {
