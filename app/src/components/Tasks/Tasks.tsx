@@ -1,6 +1,6 @@
 import { Flex, Input } from '@chakra-ui/react'
 import { Notion } from './Notion'
-import { Task } from '../model/task'
+import { Task } from '../../models/task'
 
 type TasksProps = {
   doingTask: string

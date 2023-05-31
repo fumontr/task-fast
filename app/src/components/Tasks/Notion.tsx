@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Flex, Spacer, Text } from '@chakra-ui/react'
-import type { Task } from '../model/task'
+import type { Task } from '../../models/task'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 

@@ -1,5 +1,5 @@
 import { NextPage } from 'next'
-import { Stopwatch } from '../components/Stopwatch'
+import { Stopwatch } from '../components/Stopwatch/Stopwatch'
 
 const Home: NextPage = () => {
   return <Stopwatch />

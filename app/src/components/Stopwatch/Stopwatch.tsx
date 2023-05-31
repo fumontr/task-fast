@@ -1,10 +1,10 @@
 import { Flex } from '@chakra-ui/react'
-import { useStopwatch } from './useStopwatch'
+import { useStopwatch } from '../../hooks/useStopwatch/useStopwatch'
 import { useEffect, useState } from 'react'
-import { Tasks } from './Tasks'
+import { Tasks } from '../Tasks/Tasks'
 import { DisplayTime } from './DisplayTime'
 import axios from 'axios'
-import { Task } from '../model/task'
+import { Task } from '../../models/task'
 import { StopwatchButtons } from './StopwatchButtons'
 
 export const Stopwatch = () => {
