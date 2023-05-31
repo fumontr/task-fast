@@ -1,6 +1,9 @@
 import dayjs from 'dayjs'
 import { Task } from '../../models/task'
 import axios from 'axios'
+import duration from 'dayjs/plugin/duration'
+
+dayjs.extend(duration)
 
 export const convertToTimeString = (
   time: dayjs.Dayjs | null
@@ -25,23 +28,15 @@ export const startTask = (
   task: Task,
   setTasks: (value: Task[] | ((prevValue: Task[]) => Task[])) => void
 ) => {
-  const postTask: Task = {
-    name: task.name,
-    start: task.start,
-    end: task.end,
-    tag: task.tag,
-    pageId: 'frontend-temp-pageId',
-  }
-
   setTasks((prevTasks) => {
-    return [...prevTasks, postTask]
+    return [...prevTasks, task]
   })
 
   axios
-    .post('/api/task', postTask)
+    .post('/api/tasks', task)
     .then((res) => {
       const newTask = {
-        ...postTask,
+        ...task,
         pageId: res.data.data.id,
       }
       setTasks((prevTasks) => {
@@ -58,7 +53,7 @@ export const startTask = (
     })
 }
 
-export const stopTask = (end: string, id: string | null, start: string) => {
+export const stopTask = (id: string | null, start: string, end: string) => {
   if (id === null) {
     console.log('task id is null')
     return
@@ -73,7 +68,7 @@ export const stopTask = (end: string, id: string | null, start: string) => {
   }
 
   axios
-    .patch('/api/task', postTask)
+    .patch('/api/tasks', postTask)
     .then((res) => {
       console.log(res)
     })

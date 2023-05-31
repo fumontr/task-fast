@@ -3,13 +3,11 @@ import dayjs from 'dayjs'
 
 export const useStopwatch = () => {
   const [isRunning, setIsRunning] = useState(false)
-  const [startAt, setStartAt] = useState(dayjs())
   const [elapseTime, setElapseTime] = useState<number>(0)
 
   const startStopwatch = useCallback((startAt: string) => {
     const start = startAt ? dayjs(startAt) : dayjs()
     setIsRunning(true)
-    setStartAt(start)
     // 現在時刻 - start で経過時間を計算. number型で保持
     const elapsed = dayjs().diff(start, 'second')
     setElapseTime(elapsed)
@@ -26,7 +24,7 @@ export const useStopwatch = () => {
       1000
     )
     return () => clearInterval(timer)
-  }, [startAt, isRunning])
+  }, [isRunning])
 
   return {
     isRunning,

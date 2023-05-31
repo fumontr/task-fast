@@ -5,8 +5,8 @@ import { startTask, stopTask } from '../Tasks/util'
 import dayjs from 'dayjs'
 
 type StopwatchButtonsProps = {
-  doingTask: string
-  setDoingTask: (doingTask: string) => void
+  doingTaskName: string
+  setDoingTaskName: (doingTask: string) => void
   startStopwatch: (doingTask: string) => void
   stopStopwatch: () => void
   isRunning: boolean
@@ -14,12 +14,12 @@ type StopwatchButtonsProps = {
   tasks: Task[]
 }
 
-export const StopwatchButtons = ({
+export const Buttons = ({
+  doingTaskName,
+  setDoingTaskName,
   startStopwatch,
-  doingTask,
-  setDoingTask,
-  isRunning,
   stopStopwatch,
+  isRunning,
   setTasks,
   tasks,
 }: StopwatchButtonsProps) => {
@@ -30,10 +30,10 @@ export const StopwatchButtons = ({
     const start = dayjs().format()
     const task: Task = {
       start: start,
-      name: doingTask,
+      name: doingTaskName,
       tag: 'task-fast',
       end: null,
-      pageId: null,
+      pageId: 'frontend-temp-pageId',
     }
     startTask(task, setTasks)
     setStartAt(start)
@@ -42,10 +42,11 @@ export const StopwatchButtons = ({
   const handleStop = () => {
     stopStopwatch()
     const end = dayjs().format()
-    setDoingTask('') // Task clear
+    setDoingTaskName('') // Task clear
+    // 複数いたらバグる
     const ongoingTask = tasks.find((task) => !task.end)
     if (ongoingTask) {
-      stopTask(end, ongoingTask.pageId ?? '', startAt)
+      stopTask(ongoingTask.pageId ?? '', startAt, end)
       setTasks((prevTasks) => {
         const newTasks = [...prevTasks]
         const index = newTasks.findIndex(
@@ -57,29 +58,27 @@ export const StopwatchButtons = ({
     }
   }
 
+  const commonButtonStyle = {
+    color: 'white',
+    size: 'lg',
+    borderColor: 'white',
+    border: '1px',
+    _hover: { bg: 'gray.800' },
+    _active: { bg: 'gray.700' },
+    bg: 'gray.900',
+  }
+
   return (
     <Flex direction="row">
       <Button
-        color="white"
-        size="lg"
-        borderColor="white"
-        border="1px"
-        _hover={{ bg: 'gray.800' }}
-        _active={{ bg: 'gray.700' }}
-        bg="gray.900"
+        {...commonButtonStyle}
         onClick={handleStart}
         display={isRunning ? 'none' : 'Flex'}
       >
         スタート
       </Button>
       <Button
-        color="white"
-        size="lg"
-        borderColor="white"
-        border="1px"
-        _hover={{ bg: 'gray.800' }}
-        _active={{ bg: 'gray.700' }}
-        bg="gray.900"
+        {...commonButtonStyle}
         onClick={handleStop}
         display={isRunning ? 'Flex' : 'none'}
       >
