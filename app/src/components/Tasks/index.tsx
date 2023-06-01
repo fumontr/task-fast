@@ -1,6 +1,8 @@
 import { Flex } from '@chakra-ui/react'
-import type { Task } from '../../models/task'
+
 import { TaskContainer } from './TaskContainer'
+
+import type { Task } from '../../models/task'
 
 export const Tasks = ({ tasks }: { tasks: Task[] }) => {
   const displayWidth = '600px'

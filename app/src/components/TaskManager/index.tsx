@@ -1,6 +1,6 @@
-import { Tasks } from '../Tasks'
 import { Task } from '../../models/task'
 import { Inbox } from '../Inbox'
+import { Tasks } from '../Tasks'
 
 type TasksProps = {
   doingTaskName: string

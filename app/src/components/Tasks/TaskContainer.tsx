@@ -1,6 +1,8 @@
-import { Task } from '../../models/task'
-import dayjs from 'dayjs'
 import { Flex, Spacer, Text } from '@chakra-ui/react'
+import dayjs from 'dayjs'
+
+import { Task } from '../../models/task'
+
 import { calcElapseTime, convertToTimeString } from './util'
 
 export const TaskContainer = (task: Task) => {

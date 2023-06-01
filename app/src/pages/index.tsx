@@ -1,11 +1,14 @@
+import { useEffect, useState } from 'react'
+
+import { Flex } from '@chakra-ui/react'
+import axios from 'axios'
 import { NextPage } from 'next'
+
 import { Stopwatch } from '../components/Stopwatch'
 import { TaskManager } from '../components/TaskManager'
-import { Flex } from '@chakra-ui/react'
 import { useStopwatch } from '../hooks/useStopwatch/useStopwatch'
-import { useEffect, useState } from 'react'
 import { Task } from '../models/task'
-import axios from 'axios'
+
 
 const Home: NextPage = () => {
   const { isRunning, elapseTime, startStopwatch, stopStopwatch } =
@@ -33,7 +36,7 @@ const Home: NextPage = () => {
     }
 
     fetchTasks()
-  }, [])
+  })
 
   const [doingTaskName, setDoingTaskName] = useState<string>('')
 

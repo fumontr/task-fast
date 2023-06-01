@@ -1,6 +1,7 @@
-import { DisplayTime } from './DisplayTime'
-import { Buttons } from './Buttons'
 import { Task } from '../../models/task'
+
+import { Buttons } from './Buttons'
+import { DisplayTime } from './DisplayTime'
 
 type StopwatchProps = {
   elapseTime: number
