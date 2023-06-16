@@ -1,20 +1,20 @@
 import { Flex, Input } from '@chakra-ui/react'
 
 type InboxProps = {
-  doingTaskName: string
-  setDoingTaskName: (task: string) => void
+  taskName: string
+  setTaskName: (taskName: string) => void
 }
 
-export const Inbox = ({ doingTaskName, setDoingTaskName }: InboxProps) => {
+export const Inbox = ({ taskName, setTaskName }: InboxProps) => {
   const displayWidth = '600px'
   return (
     <Flex my={8}>
       <Input
         w={displayWidth}
-        value={doingTaskName}
+        value={taskName}
         placeholder={"What's next?"}
         onChange={(e) => {
-          setDoingTaskName(e.target.value)
+          setTaskName(e.target.value)
         }}
         color={'white'}
         borderColor="gray.500"

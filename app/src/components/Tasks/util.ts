@@ -1,4 +1,3 @@
-import axios from 'axios'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 
@@ -25,42 +24,30 @@ export const calcElapseTime = (
   return `${hours}:${minutes}:${seconds}`
 }
 
-export const startTask = (
-  task: Task,
-  setTasks: (value: Task[] | ((prevValue: Task[]) => Task[])) => void
-) => {
-  setTasks((prevTasks) => {
-    return [...prevTasks, task]
+export const startTask = async (task: Task) => {
+  const result = await fetch('/api/tasks', {
+    method: 'POST',
+    body: JSON.stringify(task),
   })
 
-  axios
-    .post('/api/tasks', task)
-    .then((res) => {
-      const newTask = {
-        ...task,
-        pageId: res.data.data.id,
-      }
-      setTasks((prevTasks) => {
-        const newTasks = [...prevTasks]
-        const index = newTasks.findIndex(
-          (task) => task.pageId === 'frontend-temp-pageId'
-        )
-        newTasks[index] = newTask
-        return newTasks
-      })
-    })
-    .catch((err) => {
-      console.error(err)
-    })
+  console.log(task)
+
+  if (!result.ok) {
+    console.error(`[${result.status}] failed to post new task: ${result.body}`)
+  }
 }
 
-export const stopTask = (id: string | null, start: string, end: string) => {
+export const stopTask = async (
+  id: string | null,
+  start: string,
+  end: string
+) => {
   if (id === null) {
     console.log('task id is null')
     return
   }
 
-  const postTask: Task = {
+  const task: Task = {
     name: '',
     start: start,
     end: end,
@@ -68,12 +55,12 @@ export const stopTask = (id: string | null, start: string, end: string) => {
     pageId: id,
   }
 
-  axios
-    .patch('/api/tasks', postTask)
-    .then((res) => {
-      console.log(res)
-    })
-    .catch((err) => {
-      console.error(err)
-    })
+  const result = await fetch('/api/tasks', {
+    method: 'PATCH',
+    body: JSON.stringify(task),
+  })
+
+  if (!result.ok) {
+    console.error(`[${result.status}] failed to patch task: ${result}`)
+  }
 }

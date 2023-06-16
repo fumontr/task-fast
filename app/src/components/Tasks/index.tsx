@@ -16,7 +16,7 @@ export const Tasks = ({ tasks }: { tasks: Task[] }) => {
       alignItems="center"
       direction="column"
     >
-      {tasks.map((data) => {
+      {tasks?.map((data) => {
         return <TaskContainer key={data.pageId} {...data} />
       })}
     </Flex>

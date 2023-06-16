@@ -8,57 +8,45 @@ import { startTask, stopTask } from '../Tasks/util'
 import type { Task } from '../../models/task'
 
 type StopwatchButtonsProps = {
-  doingTaskName: string
-  setDoingTaskName: (doingTask: string) => void
-  startStopwatch: (doingTask: string) => void
+  startStopwatch: (startAt: string) => void
   stopStopwatch: () => void
   isRunning: boolean
-  setTasks: (value: Task[] | ((prevValue: Task[]) => Task[])) => void
-  tasks: Task[]
+  ongoingTask: Task | null
+  taskName: string
+  setTaskName: (taskName: string) => void
 }
 
 export const Buttons = ({
-  doingTaskName,
-  setDoingTaskName,
   startStopwatch,
   stopStopwatch,
   isRunning,
-  setTasks,
-  tasks,
+  ongoingTask,
+  taskName,
+  setTaskName,
 }: StopwatchButtonsProps) => {
   const [startAt, setStartAt] = useState<string>('')
 
-  const handleStart = () => {
-    startStopwatch('')
+  const handleStart = async () => {
+    startStopwatch(ongoingTask?.start ?? '')
     const start = dayjs().format()
     const task: Task = {
       start: start,
-      name: doingTaskName,
+      name: taskName,
       tag: 'task-fast',
       end: null,
       pageId: 'frontend-temp-pageId',
     }
-    startTask(task, setTasks)
+    await startTask(task)
     setStartAt(start)
   }
 
-  const handleStop = () => {
+  const handleStop = async () => {
     stopStopwatch()
     const end = dayjs().format()
-    setDoingTaskName('') // Task clear
-    // 複数いたらバグる
-    const ongoingTask = tasks.find((task) => !task.end)
     if (ongoingTask) {
-      stopTask(ongoingTask.pageId ?? '', startAt, end)
-      setTasks((prevTasks) => {
-        const newTasks = [...prevTasks]
-        const index = newTasks.findIndex(
-          (task) => task.pageId === ongoingTask.pageId
-        )
-        newTasks[index].end = end
-        return newTasks
-      })
+      await stopTask(ongoingTask.pageId ?? '', startAt, end)
     }
+    setTaskName('')
   }
 
   const commonButtonStyle = {
