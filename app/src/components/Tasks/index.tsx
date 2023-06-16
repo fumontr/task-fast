@@ -4,7 +4,7 @@ import { TaskContainer } from './TaskContainer'
 
 import type { Task } from '../../models/task'
 
-export const Tasks = ({ tasks }: { tasks: Task[] }) => {
+export const Tasks = ({ tasks }: { tasks: Task[] | undefined }) => {
   const displayWidth = '600px'
   return (
     <Flex

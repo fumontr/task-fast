@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Button, Flex } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 
-import { startTask, stopTask } from '../Tasks/util'
+import { startTask, stopTask } from './util'
 
 import type { Task } from '../../models/task'
 
@@ -11,7 +11,7 @@ type StopwatchButtonsProps = {
   startStopwatch: (startAt: string) => void
   stopStopwatch: () => void
   isRunning: boolean
-  ongoingTask: Task | null
+  ongoingTask: Task | undefined
   taskName: string
   setTaskName: (taskName: string) => void
 }

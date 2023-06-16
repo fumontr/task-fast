@@ -1,4 +1,3 @@
-
 import { Flex } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import useSWR from 'swr'
@@ -9,15 +8,20 @@ import { Task } from '../models/task'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
+type GetTasksResponse = {
+    data: Task[]
+    message: string
+}
+
 const Home: NextPage = () => {
-  const { data, error, isLoading } = useSWR('/api/tasks', fetcher)
+  const { data, error, isLoading } = useSWR<GetTasksResponse>('/api/tasks', fetcher)
 
   if (isLoading) return <Flex height="100vh" width="full" bg="gray.900" />
   if (error) return <Flex>{error}</Flex>
 
   console.log(data)
 
-  const task = data.data.find((task: Task) => task.end === null)
+  const task = data?.data.find((task: Task) => task.end === null)
   console.log(task)
   return (
     <Flex
@@ -29,7 +33,7 @@ const Home: NextPage = () => {
       direction="column"
     >
       <TaskController ongoingTask={task} />
-      <TaskManager tasks={data.data} />
+      <TaskManager tasks={data?.data} />
     </Flex>
   )
 }
