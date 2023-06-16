@@ -7,7 +7,11 @@ import { Buttons } from './Buttons'
 import { DisplayTime } from './DisplayTime'
 import { Inbox } from './Inbox'
 
-export const TaskController = ({ ongoingTask }: { ongoingTask: Task | undefined }) => {
+export const TaskController = ({
+  ongoingTask,
+}: {
+  ongoingTask: Task | undefined
+}) => {
   const { isRunning, elapseTime, startStopwatch, stopStopwatch } =
     useStopwatch()
   const hour = Math.floor((elapseTime / (60 * 60)) % 24)

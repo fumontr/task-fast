@@ -1,5 +1,6 @@
-import { Task } from '../../models/task'
 import { mutate } from 'swr'
+
+import { Task } from '../../models/task'
 
 export const startTask = async (task: Task) => {
   const result = await fetch('/api/tasks', {

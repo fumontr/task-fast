@@ -9,12 +9,15 @@ import { Task } from '../models/task'
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 type GetTasksResponse = {
-    data: Task[]
-    message: string
+  data: Task[]
+  message: string
 }
 
 const Home: NextPage = () => {
-  const { data, error, isLoading } = useSWR<GetTasksResponse>('/api/tasks', fetcher)
+  const { data, error, isLoading } = useSWR<GetTasksResponse>(
+    '/api/tasks',
+    fetcher
+  )
 
   if (isLoading) return <Flex height="100vh" width="full" bg="gray.900" />
   if (error) return <Flex>{error}</Flex>
