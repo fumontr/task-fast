@@ -10,7 +10,7 @@
     "lint:next": "next lint . --ignore-path .prettierignore --max-warnings 0 --dir src",
     "lint:prettier": "prettier --check './src/**/*.{ts,tsx}'",
     "lint:typecheck": "tsc --pretty --noEmit",
-    "format": "yarn format:prettier",
+    "format": "yarn format:prettier && yarn format:eslint",
     "format:eslint": "yarn lint:next --fix",
     "format:prettier": "yarn lint:prettier --write \"./src/**/*.{ts,tsx}\"",
     "test": "jest",
@@ -36,6 +36,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
+    "swr": "^2.1.5",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

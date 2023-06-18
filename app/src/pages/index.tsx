@@ -1,44 +1,28 @@
-import { useEffect, useState } from 'react'
-
 import { Flex } from '@chakra-ui/react'
-import axios from 'axios'
 import { NextPage } from 'next'
+import useSWR from 'swr'
 
-import { Stopwatch } from '../components/Stopwatch'
+import { TaskController } from '../components/TaskController'
 import { TaskManager } from '../components/TaskManager'
-import { useStopwatch } from '../hooks/useStopwatch/useStopwatch'
 import { Task } from '../models/task'
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json())
+
+type GetTasksResponse = {
+  data: Task[]
+  message: string
+}
 
 const Home: NextPage = () => {
-  const { isRunning, elapseTime, startStopwatch, stopStopwatch } =
-    useStopwatch()
+  const { data, error, isLoading } = useSWR<GetTasksResponse>(
+    '/api/tasks',
+    fetcher
+  )
 
-  const [tasks, setTasks] = useState<Task[]>([])
+  if (isLoading) return <Flex height="100vh" width="full" bg="gray.900" />
+  if (error) return <Flex>{error}</Flex>
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      const url = '/api/notion' // TODO: Pathを適切な内容に変更する
-      const filter = {}
-      try {
-        const res = await axios.post(url, filter)
-        setTasks(res.data.data)
-
-        // すでに実行中のタスクが見つかったら、ストップウォッチを適切な経過時間で開始する
-        const ongoingTask = res.data.data.find((task: Task) => !task.end)
-        if (ongoingTask) {
-          startStopwatch(ongoingTask.start)
-          setDoingTaskName(ongoingTask.name)
-        }
-      } catch (err) {
-        console.error(err)
-      }
-    }
-
-    fetchTasks()
-  })
-
-  const [doingTaskName, setDoingTaskName] = useState<string>('')
+  const task = data?.data.find((task: Task) => task.end === null)
 
   return (
     <Flex
@@ -49,21 +33,8 @@ const Home: NextPage = () => {
       bg="gray.900"
       direction="column"
     >
-      <Stopwatch
-        isRunning={isRunning}
-        elapseTime={elapseTime}
-        startStopwatch={startStopwatch}
-        stopStopwatch={stopStopwatch}
-        doingTaskName={doingTaskName}
-        setDoingTaskName={setDoingTaskName}
-        tasks={tasks}
-        setTasks={setTasks}
-      />
-      <TaskManager
-        doingTaskName={doingTaskName}
-        setDoingTaskName={setDoingTaskName}
-        tasks={tasks}
-      />
+      <TaskController ongoingTask={task} />
+      <TaskManager tasks={data?.data} />
     </Flex>
   )
 }

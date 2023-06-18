@@ -4,7 +4,7 @@ import { TaskContainer } from './TaskContainer'
 
 import type { Task } from '../../models/task'
 
-export const Tasks = ({ tasks }: { tasks: Task[] }) => {
+export const Tasks = ({ tasks }: { tasks: Task[] | undefined }) => {
   const displayWidth = '600px'
   return (
     <Flex
@@ -16,7 +16,7 @@ export const Tasks = ({ tasks }: { tasks: Task[] }) => {
       alignItems="center"
       direction="column"
     >
-      {tasks.map((data) => {
+      {tasks?.map((data) => {
         return <TaskContainer key={data.pageId} {...data} />
       })}
     </Flex>

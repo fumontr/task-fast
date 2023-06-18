@@ -1,24 +1,13 @@
 import { Task } from '../../models/task'
-import { Inbox } from '../Inbox'
 import { Tasks } from '../Tasks'
 
 type TasksProps = {
-  doingTaskName: string
-  setDoingTaskName: (task: string) => void
-  tasks: Task[]
+  tasks: Task[] | undefined
 }
 
-export const TaskManager = ({
-  doingTaskName,
-  setDoingTaskName,
-  tasks,
-}: TasksProps) => {
+export const TaskManager = ({ tasks }: TasksProps) => {
   return (
     <>
-      <Inbox
-        doingTaskName={doingTaskName}
-        setDoingTaskName={setDoingTaskName}
-      />
       <Tasks tasks={tasks} />
     </>
   )
