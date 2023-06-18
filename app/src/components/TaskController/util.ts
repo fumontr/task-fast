@@ -8,8 +8,6 @@ export const startTask = async (task: Task) => {
     body: JSON.stringify(task),
   })
 
-  console.log(task)
-
   if (!result.ok) {
     console.error(`[${result.status}] failed to post new task: ${result.body}`)
   }
@@ -23,7 +21,6 @@ export const stopTask = async (
   end: string
 ) => {
   if (id === null) {
-    console.log('task id is null')
     return
   }
 

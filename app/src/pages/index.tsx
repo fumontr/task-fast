@@ -22,10 +22,8 @@ const Home: NextPage = () => {
   if (isLoading) return <Flex height="100vh" width="full" bg="gray.900" />
   if (error) return <Flex>{error}</Flex>
 
-  console.log(data)
-
   const task = data?.data.find((task: Task) => task.end === null)
-  console.log(task)
+
   return (
     <Flex
       justifyContent="center"

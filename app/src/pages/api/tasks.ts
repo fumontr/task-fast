@@ -39,8 +39,6 @@ export default async function handler(
       const response = await axios.post(url, requestBody, config)
       res.status(200).json({ message: 'Success', data: response.data })
     } catch (err) {
-      // console.log(`[${err.response.status}] ${err}`)
-      console.log(err)
       res.status(500).json({ message: 'Failed' })
     }
   } else if (req.method == 'PATCH') {
@@ -54,14 +52,12 @@ export default async function handler(
       )
       res.status(200).json({ message: 'Success', data: response.data })
     } catch (err) {
-      console.log(err)
       res.status(500).json({ message: 'Failed' })
     }
   }
 }
 
 const createCreateTaskBody = (name: string, tag: string, start: string) => {
-  console.log(`name: ${name}, tag: ${tag}, start: ${start}`)
   return {
     parent: { database_id: databaseId },
     properties: {
