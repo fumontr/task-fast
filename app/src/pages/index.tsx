@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import useSWR from 'swr'
 
+import { Error } from '../components/Error'
 import { TaskController } from '../components/TaskController'
 import { TaskManager } from '../components/TaskManager'
 import { Task } from '../models/task'
@@ -13,6 +14,8 @@ type GetTasksResponse = {
   message: string
 }
 
+const Failed = 'Failed'
+
 const Home: NextPage = () => {
   const { data, error, isLoading } = useSWR<GetTasksResponse>(
     '/api/tasks',
@@ -21,6 +24,24 @@ const Home: NextPage = () => {
 
   if (isLoading) return <Flex height="100vh" width="full" bg="gray.900" />
   if (error) return <Flex>{error}</Flex>
+
+  const responseMessage = data?.message
+
+  if (responseMessage === Failed) {
+    return (
+      <Flex
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+        width="full"
+        bg="gray.900"
+        direction="column"
+      >
+        <TaskController ongoingTask={undefined} />
+        <Error />
+      </Flex>
+    )
+  }
 
   const task = data?.data.find((task: Task) => task.end === null)
 
