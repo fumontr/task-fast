@@ -1,8 +1,8 @@
 import * as React from 'react'
 
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
-import type { StyleFunctionProps } from '@chakra-ui/styled-system'
 
+import type { StyleFunctionProps } from '@chakra-ui/styled-system'
 import type { AppProps } from 'next/app'
 
 const spacing = {

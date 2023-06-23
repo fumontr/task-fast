@@ -1,5 +1,6 @@
-import { useStopwatch } from './useStopwatch'
 import { renderHook } from '@testing-library/react'
+
+import { useStopwatch } from './useStopwatch'
 
 test('before starting stopwatch', () => {
   const { result } = renderHook(() => useStopwatch())
