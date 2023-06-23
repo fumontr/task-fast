@@ -1,0 +1,24 @@
+import { Flex } from '@chakra-ui/react'
+
+import { TaskContainer } from './TaskContainer'
+
+import type { Task } from '../../models/task'
+
+export const Tasks = ({ tasks }: { tasks: Task[] | undefined }) => {
+  const displayWidth = '600px'
+  return (
+    <Flex
+      h="500px"
+      maxH="500px"
+      overflow="auto"
+      pr={4}
+      w={displayWidth}
+      alignItems="center"
+      direction="column"
+    >
+      {tasks?.map((data) => {
+        return <TaskContainer key={data.pageId} {...data} />
+      })}
+    </Flex>
+  )
+}

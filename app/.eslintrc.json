@@ -1,3 +1,44 @@
 {
-  "extends": ["next", "next/core-web-vitals"]
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "unused-imports",
+    "import"
+  ],
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin", // 1. fs, pathなどnodeのbuiltinモジュール
+          "external", // 2. npm installしたパッケージ
+          "internal", // 3. webpackなどでパス設定したモジュール
+          "parent", // 4. 親階層のファイル
+          "sibling", // 5. 子階層のファイル
+          "type", // 6. 型だけインポートするファイル
+          "index" // 7. 同階層のファイル
+        ],
+        "newlines-between": "always",
+        "pathGroupsExcludedImportTypes": ["react"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
+  }
 }
