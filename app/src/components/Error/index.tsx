@@ -17,20 +17,20 @@ export const Error = () => {
       </Alert>
 
       <Flex direction="column">
-        <Text  pt={10} pb={4}>
+        <Text pt={10} pb={4}>
           設定方法
         </Text>
-        <Text >1. app/.env.localを作成</Text>
+        <Text>1. app/.env.localを作成</Text>
 
-        <Text >2. app/.env.localにSECRET_KEYとDB_IDを設定</Text>
+        <Text>2. app/.env.localにSECRET_KEYとDB_IDを設定</Text>
 
-        <Text  pt={10} pb={4}>
+        <Text pt={10} pb={4}>
           設定例
         </Text>
 
         <Flex direction="column">
-          <Text >SECRET_KEY=xxxxxxxxxxx</Text>
-          <Text >DB_ID=xxxxxxxxxxx</Text>
+          <Text>SECRET_KEY=xxxxxxxxxxx</Text>
+          <Text>DB_ID=xxxxxxxxxxx</Text>
         </Flex>
       </Flex>
     </Flex>

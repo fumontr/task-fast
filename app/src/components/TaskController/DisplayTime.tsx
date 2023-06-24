@@ -12,7 +12,7 @@ export const DisplayTime = ({ hours, minutes, seconds }: DisplayTimeProps) => {
   const secondStr = seconds.toString().padStart(2, '0')
 
   return (
-    <Flex pt={{ base: 0, md: 10 }} direction={'row'} alignItems="center">
+    <Flex pt={{ base: 0, md: 8 }} direction={'row'} alignItems="center">
       <TimeText text={hourStr} />
       <TimeSeparator />
       <TimeText text={minuteStr} />
@@ -35,9 +35,5 @@ const TimeText = ({ text }: { text: string }) => (
 )
 
 const TimeSeparator = () => (
-  <Text fontSize={{ base: '6xl', md: '120px' }}
-        // color="white">
-  >
-    :
-  </Text>
+  <Text fontSize={{ base: '6xl', md: '120px' }}>:</Text>
 )
