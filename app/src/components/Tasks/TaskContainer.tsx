@@ -16,22 +16,22 @@ export const TaskContainer = (task: Task) => {
   return (
     <Flex w="full">
       <Flex w="200px">
-        <Text color="white">{task.name}</Text>
+        <Text >{task.name}</Text>
       </Flex>
       <Spacer />
       <Flex px={2} w="60px">
-        <Text color="white" fontFamily="Roboto Mono">
+        <Text  fontFamily="Roboto Mono">
           {startStr}
         </Text>
       </Flex>
-      <Text color="white">~</Text>
+      <Text >~</Text>
       <Flex px={2} w="60px">
-        <Text color="white" fontFamily="Roboto Mono">
+        <Text  fontFamily="Roboto Mono">
           {endStr}
         </Text>
       </Flex>
       <Flex px={2} w="100px" justifyContent="right">
-        <Text color="white" fontFamily="Roboto Mono">
+        <Text  fontFamily="Roboto Mono">
           {elapseTime}
         </Text>
       </Flex>

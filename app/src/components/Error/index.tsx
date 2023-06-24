@@ -11,26 +11,26 @@ export const Error = () => {
       direction="column"
       pt={4}
     >
-      <Alert color="white" status="error">
+      <Alert status="error">
         <AlertIcon />
         Notionに接続できません。SECRET_KEYとDB_IDを設定してください。
       </Alert>
 
       <Flex direction="column">
-        <Text color="white" pt={10} pb={4}>
+        <Text  pt={10} pb={4}>
           設定方法
         </Text>
-        <Text color="white">1. app/.env.localを作成</Text>
+        <Text >1. app/.env.localを作成</Text>
 
-        <Text color="white">2. app/.env.localにSECRET_KEYとDB_IDを設定</Text>
+        <Text >2. app/.env.localにSECRET_KEYとDB_IDを設定</Text>
 
-        <Text color="white" pt={10} pb={4}>
+        <Text  pt={10} pb={4}>
           設定例
         </Text>
 
-        <Flex background="gray.700" direction="column">
-          <Text color="white">SECRET_KEY=xxxxxxxxxxx</Text>
-          <Text color="white">DB_ID=xxxxxxxxxxx</Text>
+        <Flex direction="column">
+          <Text >SECRET_KEY=xxxxxxxxxxx</Text>
+          <Text >DB_ID=xxxxxxxxxxx</Text>
         </Flex>
       </Flex>
     </Flex>

@@ -25,7 +25,7 @@ export const DisplayTime = ({ hours, minutes, seconds }: DisplayTimeProps) => {
 const TimeText = ({ text }: { text: string }) => (
   <Text
     fontSize={{ base: '6xl', md: '120px' }}
-    color="white"
+    // color="white"
     w={{ base: '80%', md: '180px' }}
     textAlign="center"
     fontFamily="Roboto Mono"
@@ -35,7 +35,9 @@ const TimeText = ({ text }: { text: string }) => (
 )
 
 const TimeSeparator = () => (
-  <Text fontSize={{ base: '6xl', md: '120px' }} color="white">
+  <Text fontSize={{ base: '6xl', md: '120px' }}
+        // color="white">
+  >
     :
   </Text>
 )

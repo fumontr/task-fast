@@ -34,7 +34,6 @@ const Home: NextPage = () => {
         alignItems="center"
         height="100vh"
         width="full"
-        bg="gray.900"
         direction="column"
       >
         <TaskController ongoingTask={undefined} />
@@ -51,7 +50,7 @@ const Home: NextPage = () => {
       alignItems="center"
       height="100vh"
       width="full"
-      bg="gray.900"
+      // bg="gray.900"
       direction="column"
     >
       <TaskController ongoingTask={task} />

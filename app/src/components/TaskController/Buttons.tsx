@@ -50,13 +50,13 @@ export const Buttons = ({
   }
 
   const commonButtonStyle = {
-    color: 'white',
+    // color: 'white',
     size: 'lg',
-    borderColor: 'white',
-    border: '1px',
-    _hover: { bg: 'gray.800' },
-    _active: { bg: 'gray.700' },
-    bg: 'gray.900',
+    // borderColor: 'white',
+    // border: '1px',
+    // _hover: { bg: 'gray.800' },
+    // _active: { bg: 'gray.700' },
+    // bg: 'gray.900',
   }
 
   return (
