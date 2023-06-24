@@ -32,9 +32,7 @@ const Home: NextPage = () => {
       <Flex
         justifyContent="center"
         alignItems="center"
-        height="100vh"
         width="full"
-        bg="gray.900"
         direction="column"
       >
         <TaskController ongoingTask={undefined} />
@@ -49,9 +47,7 @@ const Home: NextPage = () => {
     <Flex
       justifyContent="center"
       alignItems="center"
-      height="100vh"
       width="full"
-      bg="gray.900"
       direction="column"
     >
       <TaskController ongoingTask={task} />
