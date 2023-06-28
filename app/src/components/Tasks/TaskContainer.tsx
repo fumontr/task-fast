@@ -26,7 +26,7 @@ export const TaskContainer = (task: Task) => {
       <Flex px={2} w="60px">
         <Text fontFamily="Roboto Mono">{endStr}</Text>
       </Flex>
-      <Flex px={2} w="100px" justifyContent="right">
+      <Flex pl={2} w="100px" justifyContent="right">
         <Text fontFamily="Roboto Mono">{elapseTime}</Text>
       </Flex>
     </Flex>
