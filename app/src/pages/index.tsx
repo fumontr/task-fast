@@ -22,7 +22,7 @@ const Home: NextPage = () => {
     fetcher
   )
 
-  if (isLoading) return <Flex height="100vh" width="full" bg="gray.900" />
+  if (isLoading) return <Flex height="100vh" width="full" />
   if (error) return <Flex>{error}</Flex>
 
   const responseMessage = data?.message
