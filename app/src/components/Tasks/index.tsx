@@ -33,7 +33,6 @@ export const Tasks = ({ tasks }: { tasks: Task[] | undefined }) => {
   const displayWidth = '600px'
   const groupedTasks = groupTasksByDate(tasks || [])
 
-  console.log(groupedTasks)
   return (
     <Flex
       h="500px"
@@ -49,7 +48,7 @@ export const Tasks = ({ tasks }: { tasks: Task[] | undefined }) => {
           <Flex direction="column" key={date} w="full">
             <Flex justifyContent="space-between" py={2}>
               <Text fontWeight="bold">{date}</Text>
-              <Text fontWeight="bold">{numberToTime(totalTime)}</Text>
+              <Text fontWeight="bold" fontFamily="Robot Mono" >{numberToTime(totalTime)}</Text>
             </Flex>
             {tasks.map((data: Task) => {
               return <TaskContainer key={data.pageId} {...data} />
