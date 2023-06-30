@@ -48,7 +48,9 @@ export const Tasks = ({ tasks }: { tasks: Task[] | undefined }) => {
           <Flex direction="column" key={date} w="full">
             <Flex justifyContent="space-between" py={2}>
               <Text fontWeight="bold">{date}</Text>
-              <Text fontWeight="bold" fontFamily="Robot Mono" >{numberToTime(totalTime)}</Text>
+              <Text fontWeight="bold" fontFamily="Robot Mono">
+                {numberToTime(totalTime)}
+              </Text>
             </Flex>
             {tasks.map((data: Task) => {
               return <TaskContainer key={data.pageId} {...data} />
