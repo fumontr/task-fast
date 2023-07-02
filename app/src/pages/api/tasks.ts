@@ -27,7 +27,7 @@ export default async function handler(
     try {
       const getURL = `https://api.notion.com/v1/databases/${process.env.DB_ID}/query`
       const response = await axios.post(getURL, {}, config)
-      const tasks: NotionTask[] = response.data.results.map(transformToTask)
+      const tasks: NotionTask[] = response.data.results.map(transformToTask).filter((task: Task) => task.start !== '')
       res.status(200).json({ message: 'Success', data: tasks })
     } catch (err) {
       res.status(500).json({ message: 'Failed' })
@@ -131,16 +131,16 @@ const createUpdateTaskBody = (end: string) => {
   }
 }
 
-const transformToTask = (data: NotionTask): Task => {
+const transformToTask = (data: NotionTask): Task | null => {
   let end = null
   if (data.properties.End.rich_text.length !== 0) {
     end = data.properties.End.rich_text[0].text.content
   }
   return {
     pageId: data.id,
-    name: data.properties.Name.title[0].text.content,
-    tag: data.properties.Tag.multi_select[0].name,
-    start: data.properties.Start.rich_text[0].text.content,
+    name: data.properties.Name.title.length > 0 ? data.properties.Name.title[0].text.content : '',
+    tag: data.properties.Tag.multi_select.length > 0 ? data.properties.Tag.multi_select[0].name : '',
+    start: data.properties.Start.rich_text.length > 0 ? data.properties.Start.rich_text[0].text.content : '',
     end: end,
   }
 }
