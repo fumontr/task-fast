@@ -133,7 +133,7 @@ const createUpdateTaskBody = (end: string) => {
   }
 }
 
-const transformToTask = (data: NotionTask): Task | null => {
+const transformToTask = (data: NotionTask): Task  => {
   let end = null
   if (data.properties.End.rich_text.length !== 0) {
     end = data.properties.End.rich_text[0].text.content
