@@ -21,8 +21,16 @@ Notionの画面ではこのようになっているはずです
 ![task-table-image](./images/task-table-image.png)
 
 ### 2. 作成したDBのIDを取得する
-作成したDBのURLを確認し、URLの末尾のIDをコピーしてください。
+作成したDBのURLを確認し、DBのIDをコピーしてください。
 後で.env.localに保存します。
+
+#### 2.1 DBのIDの確認方法について
+DBのURLの構成はこのようになっています。
+```
+https://www.notion.so/{DBのID}?v={ViewのID}
+```
+`{DBのID}`に相当する部分をDBのIDとしてコピーしておいてください。  
+*Notionアプリを利用している場合、DBのURLをCtrl+Lで取得し、URLを確認してください。
 
 ### 3. NotionのAPIKeyを取得する
 [Notionの開発者ページ](https://www.notion.so/my-integrations)にアクセスし、新しいIntegrationsを作成してください。
