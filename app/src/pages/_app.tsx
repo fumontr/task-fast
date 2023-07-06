@@ -4,7 +4,7 @@ import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
 
 import { Header } from '../components/Header'
 
-import { theme } from './theme'
+import { theme } from '../models/theme'
 
 import type { AppProps } from 'next/app'
 
