@@ -1,11 +1,41 @@
+import { SecretManagerServiceClient } from '@google-cloud/secret-manager'
 import axios from 'axios'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { NotionTask } from '../../models/notion'
 import { Task } from '../../models/task'
 
-const databaseId = process.env.DB_ID
-const secret = process.env.SECRET_KEY
+let SECRET = ''
+let DB = ''
+
+const fetchEnvironments = async () => {
+  const NOTION_SECRET_KEY = 'NOTION_SECRET_KEY'
+  const DB_ID = 'DB_ID'
+
+  const private_key = process.env.PRIVATE_KEY ?? ''
+  const privateKey = Buffer.from(private_key, 'base64').toString('utf8')
+
+  const options = {
+    private_key: privateKey,
+    client_email: process.env.CLIENT_EMAIL,
+    project_id: process.env.PROJECT_ID,
+  }
+
+  const client = new SecretManagerServiceClient(options)
+  const secretResp = await client.accessSecretVersion({
+    name: `projects/task-fast-0928/secrets/${NOTION_SECRET_KEY}/versions/1`, // TODO: バージョン管理に対応
+  })
+
+  const secret = secretResp[0].payload?.data?.toString()
+  SECRET = secret ?? '' // TODO: エラーハンドリング
+
+  const dbIdResp = await client.accessSecretVersion({
+    name: `projects/task-fast-0928/secrets/${DB_ID}/versions/1`, // TODO: バージョン管理に対応
+  })
+
+  const dbId = dbIdResp[0].payload?.data?.toString()
+  DB = dbId ?? '' // TODO: エラーハンドリング
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,9 +44,14 @@ export default async function handler(
   const url = 'https://api.notion.com/v1/pages'
   const notionVersion = '2021-08-16'
 
+  // Notionへの捜査に必要な環境変数がなければSecret Managerから取ってくる
+  if (SECRET === '' || DB === '') {
+    await fetchEnvironments()
+  }
+
   const config = {
     headers: {
-      Authorization: `Bearer ${secret}`,
+      Authorization: `Bearer ${SECRET}`,
       'Notion-Version': notionVersion,
       'Content-Type': 'application/json',
       'Allow-Control-Allow-Origin': '*',
@@ -25,7 +60,7 @@ export default async function handler(
 
   if (req.method == 'GET') {
     try {
-      const getURL = `https://api.notion.com/v1/databases/${process.env.DB_ID}/query`
+      const getURL = `https://api.notion.com/v1/databases/${DB}/query`
       const response = await axios.post(getURL, {}, config)
       const tasks: NotionTask[] = response.data.results
         .map(transformToTask)
@@ -61,7 +96,7 @@ export default async function handler(
 
 const createCreateTaskBody = (name: string, tag: string, start: string) => {
   return {
-    parent: { database_id: databaseId },
+    parent: { database_id: DB },
     properties: {
       title: {
         title: [
@@ -106,7 +141,7 @@ const createCreateTaskBody = (name: string, tag: string, start: string) => {
 
 const createUpdateTaskBody = (end: string) => {
   return {
-    parent: { database_id: databaseId },
+    parent: { database_id: DB },
     properties: {
       End: {
         rich_text: [
