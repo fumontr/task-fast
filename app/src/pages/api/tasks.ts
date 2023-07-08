@@ -1,5 +1,6 @@
 import { SecretManagerServiceClient } from '@google-cloud/secret-manager'
 import axios from 'axios'
+import { GoogleAuth } from 'google-auth-library'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { NotionTask } from '../../models/notion'
@@ -15,13 +16,16 @@ const fetchEnvironments = async () => {
   const private_key = process.env.PRIVATE_KEY ?? ''
   const privateKey = Buffer.from(private_key, 'base64').toString('utf8')
 
-  const options = {
-    private_key: privateKey,
-    client_email: process.env.CLIENT_EMAIL,
-    project_id: process.env.PROJECT_ID,
-  }
+  const auth = new GoogleAuth({
+    credentials: {
+      private_key: privateKey.replace(/\\n/g, '\n'),
+      client_email: process.env.CLIENT_EMAIL,
+    },
+    projectId: process.env.PROJECT_ID,
+  })
 
-  const client = new SecretManagerServiceClient(options)
+  const client = new SecretManagerServiceClient({ auth })
+  await client.initialize()
   const secretResp = await client.accessSecretVersion({
     name: `projects/task-fast-0928/secrets/${NOTION_SECRET_KEY}/versions/1`, // TODO: バージョン管理に対応
   })
@@ -47,6 +51,16 @@ export default async function handler(
   // Notionへの捜査に必要な環境変数がなければSecret Managerから取ってくる
   if (SECRET === '' || DB === '') {
     await fetchEnvironments()
+  }
+
+  if (SECRET === '' || DB === '') {
+    console.log(
+      `Failed to fetch environments: ${SECRET === '' ? 'SECRET' : ''}, ${
+        DB === '' ? 'DB' : ''
+      }`
+    )
+    res.status(500).json({ message: 'Failed' })
+    return
   }
 
   const config = {
