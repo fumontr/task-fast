@@ -16,6 +16,8 @@ const fetchEnvironments = async () => {
   const private_key = process.env.PRIVATE_KEY ?? ''
   const privateKey = Buffer.from(private_key, 'base64').toString('utf8')
 
+  const DB_ID_VERSION = process.env.DB_ID_VERSION ?? 1
+
   const auth = new GoogleAuth({
     credentials: {
       private_key: privateKey.replace(/\\n/g, '\n'),
@@ -25,7 +27,6 @@ const fetchEnvironments = async () => {
   })
 
   const client = new SecretManagerServiceClient({ auth })
-  await client.initialize()
   const secretResp = await client.accessSecretVersion({
     name: `projects/task-fast-0928/secrets/${NOTION_SECRET_KEY}/versions/1`, // TODO: バージョン管理に対応
   })
@@ -34,7 +35,7 @@ const fetchEnvironments = async () => {
   SECRET = secret ?? '' // TODO: エラーハンドリング
 
   const dbIdResp = await client.accessSecretVersion({
-    name: `projects/task-fast-0928/secrets/${DB_ID}/versions/1`, // TODO: バージョン管理に対応
+    name: `projects/task-fast-0928/secrets/${DB_ID}/versions/${DB_ID_VERSION}`, // TODO: バージョン管理に対応
   })
 
   const dbId = dbIdResp[0].payload?.data?.toString()
