@@ -29,6 +29,11 @@ const Settings = () => {
     setShowDBID(!showDBID)
   }
 
+  const [userId, setUserId] = useState<string>('')
+  const handleChangeUserId = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserId(e.target.value)
+  }
+
   const [apiKey, setAPIKey] = useState<string>('')
   const handleChangeAPIKey = (e: ChangeEvent<HTMLInputElement>) => {
     setAPIKey(e.target.value)
@@ -44,9 +49,9 @@ const Settings = () => {
     const result = await fetch('/api/users', {
       method: 'POST',
       body: JSON.stringify({
+        userID: userId,
         apiKey: apiKey,
         dbID: dbID,
-        userID: 'test-user',
       }),
     })
 
@@ -99,6 +104,17 @@ const Settings = () => {
       </HStack>
 
       <VStack w="600px">
+        <HStack w="full">
+          <Text w="100px" fontSize="xl">
+            User ID
+          </Text>
+
+          <Input
+            pr={'4.5rem'}
+            type="text"
+            onChange={(e) => handleChangeUserId(e)}
+          />
+        </HStack>
         <HStack w="full">
           <Text w="100px" fontSize="xl">
             API KEY

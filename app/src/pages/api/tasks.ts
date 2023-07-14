@@ -9,24 +9,51 @@ import { Task } from '../../models/task'
 let SECRET = ''
 let DB = ''
 
+let client: SecretManagerServiceClient | null = null
+let userId: string | null = null
+
+export const getUser = () => {
+  if (userId === null) {
+    userId = 'testUser'
+  }
+
+  return userId
+}
+
+export const setUser = (id: string) => {
+  if (id === '' || id === undefined) {
+    return
+  }
+
+  userId = id
+}
+
+export const getClient = () => {
+  if (client === null) {
+    const private_key = process.env.PRIVATE_KEY ?? ''
+    const privateKey = Buffer.from(private_key, 'base64').toString('utf8')
+
+    const auth = new GoogleAuth({
+      credentials: {
+        private_key: privateKey.replace(/\\n/g, '\n'),
+        client_email: process.env.CLIENT_EMAIL,
+      },
+      projectId: process.env.PROJECT_ID,
+    })
+
+    client = new SecretManagerServiceClient({ auth })
+  }
+
+  return client
+}
+
 const fetchEnvironments = async () => {
-  const NOTION_SECRET_KEY = 'NOTION_SECRET_KEY'
-  const DB_ID = 'DB_ID'
-
-  const private_key = process.env.PRIVATE_KEY ?? ''
-  const privateKey = Buffer.from(private_key, 'base64').toString('utf8')
-
+  const userId = getUser()
+  const NOTION_SECRET_KEY = `NotionAPI${userId}`
+  const DB_ID = `NotionDB${userId}`
   const DB_ID_VERSION = process.env.DB_ID_VERSION ?? 1
 
-  const auth = new GoogleAuth({
-    credentials: {
-      private_key: privateKey.replace(/\\n/g, '\n'),
-      client_email: process.env.CLIENT_EMAIL,
-    },
-    projectId: process.env.PROJECT_ID,
-  })
-
-  const client = new SecretManagerServiceClient({ auth })
+  const client = getClient()
   const secretResp = await client.accessSecretVersion({
     name: `projects/task-fast-0928/secrets/${NOTION_SECRET_KEY}/versions/1`, // TODO: バージョン管理に対応
   })
