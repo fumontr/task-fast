@@ -12,22 +12,6 @@ let DB = ''
 let client: SecretManagerServiceClient | null = null
 let userId: string | null = null
 
-export const getUser = () => {
-  if (userId === null) {
-    userId = 'testUser'
-  }
-
-  return userId
-}
-
-export const setUser = (id: string) => {
-  if (id === '' || id === undefined) {
-    return
-  }
-
-  userId = id
-}
-
 export const getClient = () => {
   if (client === null) {
     const private_key = process.env.PRIVATE_KEY ?? ''
@@ -47,26 +31,29 @@ export const getClient = () => {
   return client
 }
 
-const fetchEnvironments = async () => {
-  const userId = getUser()
+const fetchEnvironments = async (userID: string) => {
+  userId = userID || 'testUser'
   const NOTION_SECRET_KEY = `NotionAPI${userId}`
   const DB_ID = `NotionDB${userId}`
   const DB_ID_VERSION = process.env.DB_ID_VERSION ?? 1
 
   const client = getClient()
-  const secretResp = await client.accessSecretVersion({
-    name: `projects/task-fast-0928/secrets/${NOTION_SECRET_KEY}/versions/1`, // TODO: バージョン管理に対応
-  })
+  try {
+    const secretResp = await client.accessSecretVersion({
+      name: `projects/task-fast-0928/secrets/${NOTION_SECRET_KEY}/versions/1`, // TODO: バージョン管理に対応
+    })
+    const secret = secretResp[0].payload?.data?.toString()
+    SECRET = secret ?? '' // TODO: エラーハンドリング
 
-  const secret = secretResp[0].payload?.data?.toString()
-  SECRET = secret ?? '' // TODO: エラーハンドリング
+    const dbIdResp = await client.accessSecretVersion({
+      name: `projects/task-fast-0928/secrets/${DB_ID}/versions/${DB_ID_VERSION}`, // TODO: バージョン管理に対応
+    })
 
-  const dbIdResp = await client.accessSecretVersion({
-    name: `projects/task-fast-0928/secrets/${DB_ID}/versions/${DB_ID_VERSION}`, // TODO: バージョン管理に対応
-  })
-
-  const dbId = dbIdResp[0].payload?.data?.toString()
-  DB = dbId ?? '' // TODO: エラーハンドリング
+    const dbId = dbIdResp[0].payload?.data?.toString()
+    DB = dbId ?? '' // TODO: エラーハンドリング
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 export default async function handler(
@@ -76,9 +63,20 @@ export default async function handler(
   const url = 'https://api.notion.com/v1/pages'
   const notionVersion = '2021-08-16'
 
+  let userID = ''
+
+  if (req.method == 'GET') {
+    userID = req.query.userID as string
+  } else if (req.method == 'POST') {
+    const body = JSON.parse(req.body)
+    userID = body.userID
+  }
+
+  console.log(`server userID: ${userID}`)
+
   // Notionへの捜査に必要な環境変数がなければSecret Managerから取ってくる
-  if (SECRET === '' || DB === '') {
-    await fetchEnvironments()
+  if (userID !== userId || SECRET === '' || DB === '') {
+    await fetchEnvironments(userID)
   }
 
   if (SECRET === '' || DB === '') {

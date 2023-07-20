@@ -17,52 +17,58 @@ export default async function handler(
 
   const client = getClient()
 
-  const apiSecretId = `NotionAPI${userId}`
-  console.log(apiSecretId)
+  if (userId === '') return
 
-  const [apiSecret] = await client.createSecret({
-    parent: PROJECT_ID,
-    secretId: apiSecretId,
-    secret: {
-      replication: {
-        automatic: {},
+  if (apiKey !== '') {
+    const apiSecretId = `NotionAPI${userId}`
+    console.log(apiSecretId)
+
+    const [apiSecret] = await client.createSecret({
+      parent: PROJECT_ID,
+      secretId: apiSecretId,
+      secret: {
+        replication: {
+          automatic: {},
+        },
       },
-    },
-  })
+    })
 
-  console.log('Created secret: ', apiSecret.name)
+    console.log('Created secret: ', apiSecret.name)
 
-  const [apiVersion] = await client.addSecretVersion({
-    parent: apiSecret.name,
-    payload: {
-      data: Buffer.from(apiKey, 'utf8'),
-    },
-  })
-
-  console.log('Added secret version: ', apiVersion.name)
-
-  const dbSecretId = `NotionDB${userId}`
-
-  const [dbSecret] = await client.createSecret({
-    parent: PROJECT_ID,
-    secretId: dbSecretId,
-    secret: {
-      replication: {
-        automatic: {},
+    const [apiVersion] = await client.addSecretVersion({
+      parent: apiSecret.name,
+      payload: {
+        data: Buffer.from(apiKey, 'utf8'),
       },
-    },
-  })
+    })
 
-  console.log('Created secret: ', dbSecret.name)
+    console.log('Added secret version: ', apiVersion.name)
+  }
 
-  const [dbVersion] = await client.addSecretVersion({
-    parent: dbSecret.name,
-    payload: {
-      data: Buffer.from(dbId, 'utf8'),
-    },
-  })
+  if (dbId !== '') {
+    const dbSecretId = `NotionDB${userId}`
 
-  console.log('Added secret version: ', dbVersion.name)
+    const [dbSecret] = await client.createSecret({
+      parent: PROJECT_ID,
+      secretId: dbSecretId,
+      secret: {
+        replication: {
+          automatic: {},
+        },
+      },
+    })
 
-  res.status(200).json({ api: apiSecret.name, db: dbSecret.name })
+    console.log('Created secret: ', dbSecret.name)
+
+    const [dbVersion] = await client.addSecretVersion({
+      parent: dbSecret.name,
+      payload: {
+        data: Buffer.from(dbId, 'utf8'),
+      },
+    })
+
+    console.log('Added secret version: ', dbVersion.name)
+  }
+
+  res.status(200).json({ message: 'saved successfully' })
 }
