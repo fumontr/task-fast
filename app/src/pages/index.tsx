@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import { Error } from '../components/Error'
 import { TaskController } from '../components/TaskController'
 import { TaskManager } from '../components/TaskManager'
+import { useUser } from '../components/UserProvider'
 import { Task } from '../models/task'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
@@ -17,8 +18,11 @@ type GetTasksResponse = {
 const Failed = 'Failed'
 
 const Home: NextPage = () => {
+  const { user } = useUser()
+  const userID = user?.userID ?? ''
+
   const { data, error, isLoading } = useSWR<GetTasksResponse>(
-    '/api/tasks',
+    `/api/tasks?userID=${userID}`,
     fetcher
   )
 

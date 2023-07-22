@@ -9,36 +9,51 @@ import { Task } from '../../models/task'
 let SECRET = ''
 let DB = ''
 
-const fetchEnvironments = async () => {
-  const NOTION_SECRET_KEY = 'NOTION_SECRET_KEY'
-  const DB_ID = 'DB_ID'
+let client: SecretManagerServiceClient | null = null
+let userId: string | null = null
 
-  const private_key = process.env.PRIVATE_KEY ?? ''
-  const privateKey = Buffer.from(private_key, 'base64').toString('utf8')
+export const getClient = () => {
+  if (client === null) {
+    const private_key = process.env.PRIVATE_KEY ?? ''
+    const privateKey = Buffer.from(private_key, 'base64').toString('utf8')
 
-  const auth = new GoogleAuth({
-    credentials: {
-      private_key: privateKey.replace(/\\n/g, '\n'),
-      client_email: process.env.CLIENT_EMAIL,
-    },
-    projectId: process.env.PROJECT_ID,
-  })
+    const auth = new GoogleAuth({
+      credentials: {
+        private_key: privateKey.replace(/\\n/g, '\n'),
+        client_email: process.env.CLIENT_EMAIL,
+      },
+      projectId: process.env.PROJECT_ID,
+    })
 
-  const client = new SecretManagerServiceClient({ auth })
-  await client.initialize()
-  const secretResp = await client.accessSecretVersion({
-    name: `projects/task-fast-0928/secrets/${NOTION_SECRET_KEY}/versions/1`, // TODO: バージョン管理に対応
-  })
+    client = new SecretManagerServiceClient({ auth })
+  }
 
-  const secret = secretResp[0].payload?.data?.toString()
-  SECRET = secret ?? '' // TODO: エラーハンドリング
+  return client
+}
 
-  const dbIdResp = await client.accessSecretVersion({
-    name: `projects/task-fast-0928/secrets/${DB_ID}/versions/1`, // TODO: バージョン管理に対応
-  })
+const fetchEnvironments = async (userID: string) => {
+  userId = userID || 'testUser'
+  const NOTION_SECRET_KEY = `NotionAPI${userId}`
+  const DB_ID = `NotionDB${userId}`
+  const DB_ID_VERSION = process.env.DB_ID_VERSION ?? 1
 
-  const dbId = dbIdResp[0].payload?.data?.toString()
-  DB = dbId ?? '' // TODO: エラーハンドリング
+  const client = getClient()
+  try {
+    const secretResp = await client.accessSecretVersion({
+      name: `projects/task-fast-0928/secrets/${NOTION_SECRET_KEY}/versions/1`, // TODO: バージョン管理に対応
+    })
+    const secret = secretResp[0].payload?.data?.toString()
+    SECRET = secret ?? '' // TODO: エラーハンドリング
+
+    const dbIdResp = await client.accessSecretVersion({
+      name: `projects/task-fast-0928/secrets/${DB_ID}/versions/${DB_ID_VERSION}`, // TODO: バージョン管理に対応
+    })
+
+    const dbId = dbIdResp[0].payload?.data?.toString()
+    DB = dbId ?? '' // TODO: エラーハンドリング
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 export default async function handler(
@@ -48,9 +63,20 @@ export default async function handler(
   const url = 'https://api.notion.com/v1/pages'
   const notionVersion = '2021-08-16'
 
+  let userID = ''
+
+  if (req.method == 'GET') {
+    userID = req.query.userID as string
+  } else if (req.method == 'POST') {
+    const body = JSON.parse(req.body)
+    userID = body.userID
+  }
+
+  console.log(`server userID: ${userID}`)
+
   // Notionへの捜査に必要な環境変数がなければSecret Managerから取ってくる
-  if (SECRET === '' || DB === '') {
-    await fetchEnvironments()
+  if (userID !== userId || SECRET === '' || DB === '') {
+    await fetchEnvironments(userID)
   }
 
   if (SECRET === '' || DB === '') {

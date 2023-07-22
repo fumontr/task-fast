@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { Button, Flex } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 
+import { useUser } from '../UserProvider'
+
 import { startTask, stopTask } from './util'
 
 import type { Task } from '../../models/task'
@@ -24,6 +26,8 @@ export const Buttons = ({
   taskName,
   setTaskName,
 }: StopwatchButtonsProps) => {
+  const { user } = useUser()
+
   const [startAt, setStartAt] = useState<string>('')
 
   const handleStart = async () => {
@@ -36,7 +40,9 @@ export const Buttons = ({
       end: null,
       pageId: 'frontend-temp-pageId',
     }
-    await startTask(task)
+    // TODO: ましなハンドリング
+    const userID = user?.userID ?? ''
+    await startTask(task, userID)
     setStartAt(start)
   }
 
@@ -44,7 +50,9 @@ export const Buttons = ({
     stopStopwatch()
     const end = dayjs().format()
     if (ongoingTask) {
-      await stopTask(ongoingTask.pageId ?? '', startAt, end)
+      // TODO: ましなハンドリング
+      const userID = user?.userID ?? ''
+      await stopTask(ongoingTask.pageId ?? '', startAt, end, userID)
     }
     setTaskName('')
   }
