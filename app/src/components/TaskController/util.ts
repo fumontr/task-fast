@@ -2,10 +2,14 @@ import { mutate } from 'swr'
 
 import { Task } from '../../models/task'
 
-export const startTask = async (task: Task) => {
+export const startTask = async (task: Task, userID: string) => {
+  const request = {
+    ...task,
+    userID: userID,
+  }
   const result = await fetch('/api/tasks', {
     method: 'POST',
-    body: JSON.stringify(task),
+    body: JSON.stringify(request),
   })
 
   if (!result.ok) {
@@ -18,7 +22,8 @@ export const startTask = async (task: Task) => {
 export const stopTask = async (
   id: string | null,
   start: string,
-  end: string
+  end: string,
+  userID: string
 ) => {
   if (id === null) {
     return
@@ -32,9 +37,14 @@ export const stopTask = async (
     pageId: id,
   }
 
+  const request = {
+    ...task,
+    userID: userID,
+  }
+
   const result = await fetch('/api/tasks', {
     method: 'PATCH',
-    body: JSON.stringify(task),
+    body: JSON.stringify(request),
   })
 
   if (!result.ok) {
