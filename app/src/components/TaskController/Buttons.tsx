@@ -3,10 +3,11 @@ import { useState } from 'react'
 import { Button, Flex } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 
+import { useAuthContext } from '../User/authProvider'
+
 import { startTask, stopTask } from './util'
 
 import type { Task } from '../../models/task'
-import { useAuthContext } from '../User/authProvider'
 
 type StopwatchButtonsProps = {
   startStopwatch: (startAt: string) => void
