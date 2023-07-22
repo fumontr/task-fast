@@ -16,22 +16,14 @@ import {
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 
-import { useUser } from '../../components/UserProvider'
+import { loginWithGoogle, logout } from '../../components/User/auth'
+import { useAuthContext } from '../../components/User/authProvider'
 
 const Settings = () => {
   const router = useRouter()
   const toast = useToast()
 
-  const { user, login } = useUser()
-
-  const [userId, setUserId] = useState<string>('')
-  const handleChangeUserId = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserId(e.target.value)
-  }
-
-  const handleUpdateUserId = () => {
-    login(userId)
-  }
+  const authContext = useAuthContext()
 
   const [showAPIKey, setShowAPIKey] = useState<boolean>(false)
   const handleClickAPIKey = () => {
@@ -55,11 +47,12 @@ const Settings = () => {
 
   const handleOnClick = async () => {
     // TODO: Save API Key and DB ID
-    login(userId)
+    // login(userId)
+    const uid = authContext.user?.uid ?? ''
     const result = await fetch('/api/users', {
       method: 'POST',
       body: JSON.stringify({
-        userID: user?.userID,
+        userID: uid,
         apiKey: apiKey,
         dbID: dbID,
       }),
@@ -86,6 +79,10 @@ const Settings = () => {
         position: 'top',
       })
     }
+  }
+
+  const handleGoogleLogin = async () => {
+    await loginWithGoogle()
   }
 
   return (
@@ -115,26 +112,15 @@ const Settings = () => {
 
       <VStack w="600px">
         <Text fontSize="xl" w="full">
-          Current User: {user?.userID ?? 'No User is selected.'}
+          UserID: {authContext.user?.uid ?? 'No User is selected.'}
+        </Text>
+        <Text fontSize="xl" w="full">
+          User Name: {authContext?.user?.displayName ?? 'No User is selected.'}
         </Text>
         <HStack w="full">
-          <Text w="100px" fontSize="xl">
-            User ID
-          </Text>
-
-          <Input
-            pr={'4.5rem'}
-            type="text"
-            onChange={(e) => handleChangeUserId(e)}
-            w="400px"
-          />
-
-          <IconButton
-            aria-label={'update user'}
-            icon={<CheckIcon />}
-            onClick={handleUpdateUserId}
-          />
-        </HStack>
+          <Button onClick={handleGoogleLogin}>Googleでログイン</Button>
+          {authContext?.user && <Button onClick={logout}>Logout</Button>}
+          </HStack>
         <HStack w="full">
           <Text w="100px" fontSize="xl">
             API KEY
