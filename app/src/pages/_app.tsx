@@ -11,11 +11,11 @@ import type { AppProps } from 'next/app'
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
-        <ChakraProvider theme={theme}>
-          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          <Header />
-          <Component {...pageProps} />
-        </ChakraProvider>
+      <ChakraProvider theme={theme}>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <Header />
+        <Component {...pageProps} />
+      </ChakraProvider>
     </AuthProvider>
   )
 }

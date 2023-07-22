@@ -120,7 +120,7 @@ const Settings = () => {
         <HStack w="full">
           <Button onClick={handleGoogleLogin}>Googleでログイン</Button>
           {authContext?.user && <Button onClick={logout}>Logout</Button>}
-          </HStack>
+        </HStack>
         <HStack w="full">
           <Text w="100px" fontSize="xl">
             API KEY
