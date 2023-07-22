@@ -1,11 +1,60 @@
+import { SecretManagerServiceClient } from '@google-cloud/secret-manager'
 import axios from 'axios'
+import { GoogleAuth } from 'google-auth-library'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { NotionTask } from '../../models/notion'
 import { Task } from '../../models/task'
 
-const databaseId = process.env.DB_ID
-const secret = process.env.SECRET_KEY
+let SECRET = ''
+let DB = ''
+
+let client: SecretManagerServiceClient | null = null
+let userId: string | null = null
+
+export const getClient = () => {
+  if (client === null) {
+    const private_key = process.env.PRIVATE_KEY ?? ''
+    const privateKey = Buffer.from(private_key, 'base64').toString('utf8')
+
+    const auth = new GoogleAuth({
+      credentials: {
+        private_key: privateKey.replace(/\\n/g, '\n'),
+        client_email: process.env.CLIENT_EMAIL,
+      },
+      projectId: process.env.PROJECT_ID,
+    })
+
+    client = new SecretManagerServiceClient({ auth })
+  }
+
+  return client
+}
+
+const fetchEnvironments = async (userID: string) => {
+  userId = userID || 'testUser'
+  const NOTION_SECRET_KEY = `NotionAPI${userId}`
+  const DB_ID = `NotionDB${userId}`
+  const DB_ID_VERSION = process.env.DB_ID_VERSION ?? 1
+
+  const client = getClient()
+  try {
+    const secretResp = await client.accessSecretVersion({
+      name: `projects/task-fast-0928/secrets/${NOTION_SECRET_KEY}/versions/1`, // TODO: バージョン管理に対応
+    })
+    const secret = secretResp[0].payload?.data?.toString()
+    SECRET = secret ?? '' // TODO: エラーハンドリング
+
+    const dbIdResp = await client.accessSecretVersion({
+      name: `projects/task-fast-0928/secrets/${DB_ID}/versions/${DB_ID_VERSION}`, // TODO: バージョン管理に対応
+    })
+
+    const dbId = dbIdResp[0].payload?.data?.toString()
+    DB = dbId ?? '' // TODO: エラーハンドリング
+  } catch (e) {
+    console.log(e)
+  }
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,9 +63,35 @@ export default async function handler(
   const url = 'https://api.notion.com/v1/pages'
   const notionVersion = '2021-08-16'
 
+  let userID = ''
+
+  if (req.method == 'GET') {
+    userID = req.query.userID as string
+  } else if (req.method == 'POST') {
+    const body = JSON.parse(req.body)
+    userID = body.userID
+  }
+
+  console.log(`server userID: ${userID}`)
+
+  // Notionへの捜査に必要な環境変数がなければSecret Managerから取ってくる
+  if (userID !== userId || SECRET === '' || DB === '') {
+    await fetchEnvironments(userID)
+  }
+
+  if (SECRET === '' || DB === '') {
+    console.log(
+      `Failed to fetch environments: ${SECRET === '' ? 'SECRET' : ''}, ${
+        DB === '' ? 'DB' : ''
+      }`
+    )
+    res.status(500).json({ message: 'Failed' })
+    return
+  }
+
   const config = {
     headers: {
-      Authorization: `Bearer ${secret}`,
+      Authorization: `Bearer ${SECRET}`,
       'Notion-Version': notionVersion,
       'Content-Type': 'application/json',
       'Allow-Control-Allow-Origin': '*',
@@ -25,9 +100,11 @@ export default async function handler(
 
   if (req.method == 'GET') {
     try {
-      const getURL = `https://api.notion.com/v1/databases/${process.env.DB_ID}/query`
+      const getURL = `https://api.notion.com/v1/databases/${DB}/query`
       const response = await axios.post(getURL, {}, config)
-      const tasks: NotionTask[] = response.data.results.map(transformToTask)
+      const tasks: NotionTask[] = response.data.results
+        .map(transformToTask)
+        .filter((task: Task) => task.start !== '')
       res.status(200).json({ message: 'Success', data: tasks })
     } catch (err) {
       res.status(500).json({ message: 'Failed' })
@@ -59,7 +136,7 @@ export default async function handler(
 
 const createCreateTaskBody = (name: string, tag: string, start: string) => {
   return {
-    parent: { database_id: databaseId },
+    parent: { database_id: DB },
     properties: {
       title: {
         title: [
@@ -104,7 +181,7 @@ const createCreateTaskBody = (name: string, tag: string, start: string) => {
 
 const createUpdateTaskBody = (end: string) => {
   return {
-    parent: { database_id: databaseId },
+    parent: { database_id: DB },
     properties: {
       End: {
         rich_text: [
@@ -138,9 +215,18 @@ const transformToTask = (data: NotionTask): Task => {
   }
   return {
     pageId: data.id,
-    name: data.properties.Name.title[0].text.content,
-    tag: data.properties.Tag.multi_select[0].name,
-    start: data.properties.Start.rich_text[0].text.content,
+    name:
+      data.properties.Name.title.length > 0
+        ? data.properties.Name.title[0].text.content
+        : '',
+    tag:
+      data.properties.Tag.multi_select.length > 0
+        ? data.properties.Tag.multi_select[0].name
+        : '',
+    start:
+      data.properties.Start.rich_text.length > 0
+        ? data.properties.Start.rich_text[0].text.content
+        : '',
     end: end,
   }
 }

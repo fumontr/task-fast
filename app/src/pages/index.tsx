@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import { Error } from '../components/Error'
 import { TaskController } from '../components/TaskController'
 import { TaskManager } from '../components/TaskManager'
+import { useAuthContext } from '../components/User/authProvider'
 import { Task } from '../models/task'
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
@@ -17,12 +18,16 @@ type GetTasksResponse = {
 const Failed = 'Failed'
 
 const Home: NextPage = () => {
+  const authContext = useAuthContext()
+  const user = authContext.user
+  const uid = user?.uid ?? ''
+
   const { data, error, isLoading } = useSWR<GetTasksResponse>(
-    '/api/tasks',
+    `/api/tasks?userID=${uid}`,
     fetcher
   )
 
-  if (isLoading) return <Flex height="100vh" width="full" bg="gray.900" />
+  if (isLoading) return <Flex height="100vh" width="full" />
   if (error) return <Flex>{error}</Flex>
 
   const responseMessage = data?.message
@@ -32,9 +37,7 @@ const Home: NextPage = () => {
       <Flex
         justifyContent="center"
         alignItems="center"
-        height="100vh"
         width="full"
-        bg="gray.900"
         direction="column"
       >
         <TaskController ongoingTask={undefined} />
@@ -49,9 +52,7 @@ const Home: NextPage = () => {
     <Flex
       justifyContent="center"
       alignItems="center"
-      height="100vh"
       width="full"
-      bg="gray.900"
       direction="column"
     >
       <TaskController ongoingTask={task} />

@@ -16,10 +16,10 @@ export const Inbox = ({ taskName, setTaskName }: InboxProps) => {
         onChange={(e) => {
           setTaskName(e.target.value)
         }}
-        color={'white'}
-        borderColor="gray.500"
-        _focusVisible={{ borderColor: 'gray.300' }}
-        _hover={{ borderColor: 'gray.300' }}
+        // color={'white'}
+        // borderColor="gray.500"
+        // _focusVisible={{ borderColor: 'gray.300' }}
+        // _hover={{ borderColor: 'gray.300' }}
       />
     </Flex>
   )

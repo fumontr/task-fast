@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { Button, Flex } from '@chakra-ui/react'
 import dayjs from 'dayjs'
 
+import { useAuthContext } from '../User/authProvider'
+
 import { startTask, stopTask } from './util'
 
 import type { Task } from '../../models/task'
@@ -24,6 +26,9 @@ export const Buttons = ({
   taskName,
   setTaskName,
 }: StopwatchButtonsProps) => {
+  const authContext = useAuthContext()
+  const user = authContext.user
+
   const [startAt, setStartAt] = useState<string>('')
 
   const handleStart = async () => {
@@ -36,7 +41,9 @@ export const Buttons = ({
       end: null,
       pageId: 'frontend-temp-pageId',
     }
-    await startTask(task)
+    // TODO: ましなハンドリング
+    const userID = user?.uid ?? ''
+    await startTask(task, userID)
     setStartAt(start)
   }
 
@@ -44,19 +51,21 @@ export const Buttons = ({
     stopStopwatch()
     const end = dayjs().format()
     if (ongoingTask) {
-      await stopTask(ongoingTask.pageId ?? '', startAt, end)
+      // TODO: ましなハンドリング
+      const userID = user?.uid ?? ''
+      await stopTask(ongoingTask.pageId ?? '', startAt, end, userID)
     }
     setTaskName('')
   }
 
   const commonButtonStyle = {
-    color: 'white',
+    // color: 'white',
     size: 'lg',
-    borderColor: 'white',
-    border: '1px',
-    _hover: { bg: 'gray.800' },
-    _active: { bg: 'gray.700' },
-    bg: 'gray.900',
+    // borderColor: 'white',
+    // border: '1px',
+    // _hover: { bg: 'gray.800' },
+    // _active: { bg: 'gray.700' },
+    // bg: 'gray.900',
   }
 
   return (
