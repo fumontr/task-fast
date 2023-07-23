@@ -31,7 +31,6 @@ export const AuthProvider = ({ children }: AuthProps) => {
   useEffect(() => {
     const authStateChanged = onAuthStateChanged(auth, async (user) => {
       setUser(user)
-      console.log('login user', user)
     })
     return () => {
       authStateChanged()

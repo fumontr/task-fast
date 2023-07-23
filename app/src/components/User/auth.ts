@@ -35,13 +35,13 @@ export const loginWithGoogle = async () => {
 }
 
 const monitorAuthState = async () => {
-  onAuthStateChanged(auth, (user) => {
-    if (process.env.NODE_ENV !== 'development') return
-    if (user) {
-      console.log('login user: ', user)
-    } else {
-      console.log('No one login now')
-    }
+  onAuthStateChanged(auth, (_) => {
+    // if (process.env.NODE_ENV !== 'development') return
+    // if (user) {
+    //   console.log('login user: ', user)
+    // } else {
+    //   console.log('No one login now')
+    // }
   })
 }
 
