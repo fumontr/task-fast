@@ -5,10 +5,6 @@ import NextLink from 'next/link'
 export const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode()
 
-  const handleClick = () => {
-    console.log('click')
-  }
-
   return (
     <Flex w="full" h="48px" justifyContent="right" alignItems="center" px={4}>
       <Link as={NextLink} href="/settings" aria-label="settings link">
@@ -16,7 +12,6 @@ export const Header = () => {
           aria-label={'Settings'}
           icon={<SettingsIcon />}
           mx={1}
-          onClick={handleClick}
         />
       </Link>
       <IconButton
