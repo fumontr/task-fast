@@ -8,11 +8,7 @@ export const Header = () => {
   return (
     <Flex w="full" h="48px" justifyContent="right" alignItems="center" px={4}>
       <Link as={NextLink} href="/settings" aria-label="settings link">
-        <IconButton
-          aria-label={'Settings'}
-          icon={<SettingsIcon />}
-          mx={1}
-        />
+        <IconButton aria-label={'Settings'} icon={<SettingsIcon />} mx={1} />
       </Link>
       <IconButton
         aria-label={'Toggle Color Mode'}
